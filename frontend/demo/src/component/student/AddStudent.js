@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-const [ctgry, setCategory] = useState("");
-const [sction, setSection] = useState("");
+import { Checkbox } from "@mui/material";
 
 const AddStudent = () => {
   let navigate = useNavigate();
+
   const [student, setStudent] = useState({
     firstName: "",
     lastName: "",
@@ -25,6 +25,10 @@ const AddStudent = () => {
     subject: "",
   });
 
+  const [category, setCategory] = useState("");
+  const [section, setSection] = useState("");
+  // const [subject, setSubject] = useState("");
+
   const {
     firstName,
     lastName,
@@ -39,17 +43,36 @@ const AddStudent = () => {
     regFee,
     examYear,
     grade,
-    category,
-    section,
     subject,
   } = student;
 
   const handleInputChange = (e) => {
-    setStudent({
-      ...student,
-      [e.target.name]: e.target.value,
-    });
+    const { name, value, type, checked } = e.target;
+    if (type === "checkbox" && name === "subject") {
+      const newSubjects = checked
+        ? [...subject, value]
+        : subject.filter((subject) => subject !== value);
+      setStudent({
+        ...student,
+        subject: newSubjects,
+      });
+    } else {
+      setStudent({
+        ...student,
+        [name]: type === "checkbox" ? checked : value,
+      });
+    }
+
+    if (name === "category") {
+      setCategory(value);
+      setSection("");
+      setStudent({ ...student, section: "", subject: [] });
+    } else if (name === "section") {
+      setSection(value);
+      setStudent({ ...student, subject: [] });
+    }
   };
+
   const saveStudent = async (e) => {
     e.preventDefault();
     await axios.post("http://localhost:9192/students", student);
@@ -57,13 +80,13 @@ const AddStudent = () => {
   };
 
   return (
-    <div className="col-sm-8 py-2 px-5 offset-2 shadow">
-      <h2 className="mt-5"> Student Details</h2>
-      <form onSubmit={(e) => saveStudent(e)}>
+    <div className="col-sm-10 py-2 px-4 offset-2 shadow">
+      <h2 className="mt-3 mb-3">Student Details</h2>
+      <form onSubmit={saveStudent}>
         <div className="row">
           <div className="col-md-6">
             <div className="input-group mb-5">
-              <label className="input-group-text" htmlFor="fristName">
+              <label className="input-group-text" htmlFor="firstName">
                 First Name
               </label>
               <input
@@ -73,7 +96,7 @@ const AddStudent = () => {
                 id="firstName"
                 required
                 value={firstName}
-                onChange={(e) => handleInputChange(e)}
+                onChange={handleInputChange}
               />
             </div>
             <div className="input-group mb-5">
@@ -87,7 +110,7 @@ const AddStudent = () => {
                 id="lastName"
                 required
                 value={lastName}
-                onChange={(e) => handleInputChange(e)}
+                onChange={handleInputChange}
               />
             </div>
             <div className="input-group mb-5">
@@ -101,7 +124,7 @@ const AddStudent = () => {
                 id="email"
                 required
                 value={email}
-                onChange={(e) => handleInputChange(e)}
+                onChange={handleInputChange}
               />
             </div>
             <div className="input-group mb-5">
@@ -115,7 +138,7 @@ const AddStudent = () => {
                 id="homeAddress"
                 required
                 value={homeAddress}
-                onChange={(e) => handleInputChange(e)}
+                onChange={handleInputChange}
               />
             </div>
             <div className="input-group mb-5">
@@ -129,9 +152,9 @@ const AddStudent = () => {
                 id="telephone"
                 required
                 value={telephone}
-                onChange={(e) => handleInputChange(e)}
+                onChange={handleInputChange}
               />
-            </div>{" "}
+            </div>
             <div className="input-group mb-5">
               <label className="input-group-text" htmlFor="gardianName">
                 Gardian Name
@@ -143,9 +166,9 @@ const AddStudent = () => {
                 id="gardianName"
                 required
                 value={gardianName}
-                onChange={(e) => handleInputChange(e)}
+                onChange={handleInputChange}
               />
-            </div>{" "}
+            </div>
             <div className="input-group mb-5">
               <label className="input-group-text" htmlFor="gardianId">
                 Gardian NIC No
@@ -157,9 +180,9 @@ const AddStudent = () => {
                 id="gardianId"
                 required
                 value={gardianId}
-                onChange={(e) => handleInputChange(e)}
+                onChange={handleInputChange}
               />
-            </div>{" "}
+            </div>
             <div className="input-group mb-5">
               <label className="input-group-text" htmlFor="gardianTelephone">
                 Gardian Telephone
@@ -171,9 +194,9 @@ const AddStudent = () => {
                 id="gardianTelephone"
                 required
                 value={gardianTelephone}
-                onChange={(e) => handleInputChange(e)}
+                onChange={handleInputChange}
               />
-            </div>{" "}
+            </div>
             <div className="input-group mb-5">
               <label className="input-group-text" htmlFor="gardianAddress">
                 Gardian Address
@@ -185,7 +208,7 @@ const AddStudent = () => {
                 id="gardianAddress"
                 required
                 value={gardianAddress}
-                onChange={(e) => handleInputChange(e)}
+                onChange={handleInputChange}
               />
             </div>
           </div>
@@ -196,15 +219,15 @@ const AddStudent = () => {
               </label>
               <select
                 className="form-control col-sm-6"
-                type="text"
                 name="grade"
                 id="grade"
                 required
                 value={grade}
-                onChange={(e) => handleInputChange(e)}
+                onChange={handleInputChange}
               >
-                {Array.from({ length: 13 }, (_, index) => {
-                  const grade = index + 1;
+                <option value="">Select Grade</option>
+                {Array.from({ length: 8 }, (_, index) => {
+                  const grade = 6 + index;
                   return (
                     <option key={grade} value={grade}>
                       Grade {grade}
@@ -223,10 +246,12 @@ const AddStudent = () => {
                 id="examYear"
                 required
                 value={examYear}
-                onChange={(e) => handleInputChange(e)}
+                onChange={handleInputChange}
               >
+                {" "}
+                <option value="">Select Exam Year</option>
                 {Array.from({ length: 5 }, (_, index) => {
-                  const year = new Date().getFullYear() - index;
+                  const year = new Date().getFullYear() + index;
                   return (
                     <option key={year} value={year}>
                       {year}
@@ -241,74 +266,363 @@ const AddStudent = () => {
               </label>
               <select
                 className="form-control col-sm-6"
-                type="text"
                 name="category"
                 id="category"
                 required
                 value={category}
-                onChange={(e) => handleInputChange(e)}
+                onChange={handleInputChange}
               >
                 <option value="">Select Exam Type</option>
                 <option value="A/L">A/L</option>
                 <option value="O/L">O/L</option>
-                <option value="Scholarship">Scholarship</option>
               </select>
-            </div>{" "}
-            <div className="input-group mb-5">
-              <label className="input-group-text" htmlFor="section">
-                Section
-              </label>
-              <input
-                className="form-control col-sm-6"
-                type="text"
-                name="section"
-                id="section"
-                required
-                value={section}
-                onChange={(e) => handleInputChange(e)}
-              />
-            </div>{" "}
-            <div className="input-group mb-5">
-              <label className="input-group-text" htmlFor="subject">
-                Subject
-              </label>
-              <input
-                className="form-control col-sm-6"
-                type="text"
-                name="subject"
-                id="subject"
-                required
-                value={subject}
-                onChange={(e) => handleInputChange(e)}
-              />
-            </div>{" "}
-            <div className="input-group mb-5">
-              <label className="input-group-text" htmlFor="gardianAddress">
+            </div>
+            {category === "A/L" && (
+              <div className="input-group mb-5">
+                <label className="input-group-text" htmlFor="section">
+                  Section
+                </label>
+                <div className="form-control">
+                  <div className="form-check form-check-inline">
+                    <input
+                      className="form-check-input"
+                      type="radio"
+                      name="section"
+                      id="science"
+                      value="Science"
+                      checked={section === "Science"}
+                      onChange={handleInputChange}
+                    />
+                    <label className="form-check-label" htmlFor="science">
+                      Science
+                    </label>
+                  </div>
+                  <div className="form-check form-check-inline">
+                    <input
+                      className="form-check-input"
+                      type="radio"
+                      name="section"
+                      id="commerce"
+                      value="Commerce"
+                      checked={section === "Commerce"}
+                      onChange={handleInputChange}
+                    />
+                    <label className="form-check-label" htmlFor="commerce">
+                      Commerce
+                    </label>
+                  </div>
+                  <div className="form-check form-check-inline">
+                    <input
+                      className="form-check-input"
+                      type="radio"
+                      name="section"
+                      id="arts"
+                      value="Arts"
+                      checked={section === "Arts"}
+                      onChange={handleInputChange}
+                    />
+                    <label className="form-check-label" htmlFor="arts">
+                      Arts
+                    </label>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {category === "A/L" && section === "Science" && (
+              <div className="input-group mb-5">
+                <label className="input-group-text" htmlFor="subject">
+                  Subjects
+                </label>
+                <div className="form-control">
+                  <div className="form-check form-check-inline">
+                    <input
+                      className="form-check-input"
+                      type="checkbox"
+                      name="physics"
+                      id="physics"
+                      value="physics"
+                      checked={subject.includes("physics")}
+                      onChange={handleInputChange}
+                    />
+
+                    <label className="form-check-label" htmlFor="physics">
+                      Physics
+                    </label>
+                  </div>
+                  <div className="form-check form-check-inline">
+                    <input
+                      className="form-check-input"
+                      type="checkbox"
+                      name="subject"
+                      id="Biology"
+                      value="Biology"
+                      checked={subject.includes("Biology")}
+                      onChange={handleInputChange}
+                    />
+                    <label className="form-check-label" htmlFor="Biology">
+                      Biology
+                    </label>
+                  </div>
+                  <div className="form-check form-check-inline">
+                    <input
+                      className="form-check-input"
+                      type="checkbox"
+                      name="subject"
+                      id="Chemistry"
+                      value="Chemistry"
+                      checked={subject.includes("Chemistry")}
+                      onChange={handleInputChange}
+                    />
+                    <label className="form-check-label" htmlFor="Biology">
+                      Chemistry
+                    </label>
+                  </div>
+
+                  <div className="form-check form-check-inline">
+                    <input
+                      className="form-check-input"
+                      type="checkbox"
+                      name="subject"
+                      id="maths"
+                      value="Maths"
+                      checked={subject.includes("Maths")}
+                      onChange={handleInputChange}
+                    />
+                    <label className="form-check-label" htmlFor="maths">
+                      Maths
+                    </label>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {category === "A/L" && section === "Commerce" && (
+              <div className="input-group mb-5">
+                <label className="input-group-text" htmlFor="subject">
+                  Subjects
+                </label>
+                <div className="form-control">
+                  <div className="form-check form-check-inline">
+                    <input
+                      className="form-check-input"
+                      type="checkbox"
+                      name="subject"
+                      id="accounting"
+                      value="Accounting"
+                      checked={subject.includes("Accounting")}
+                      onChange={handleInputChange}
+                    />
+                    <label className="form-check-label" htmlFor="accounting">
+                      Accounting
+                    </label>
+                  </div>
+                  <div className="form-check form-check-inline">
+                    <input
+                      className="form-check-input"
+                      type="checkbox"
+                      name="subject"
+                      id="business"
+                      value="Business Studies"
+                      checked={subject.includes("Business Studies")}
+                      onChange={handleInputChange}
+                    />
+                    <label className="form-check-label" htmlFor="business">
+                      Business Studies
+                    </label>
+                  </div>
+                  <div className="form-check form-check-inline">
+                    <input
+                      className="form-check-input"
+                      type="checkbox"
+                      name="subject"
+                      id="economics"
+                      value="Economics"
+                      checked={subject.includes("Economics")}
+                      onChange={handleInputChange}
+                    />
+                    <label className="form-check-label" htmlFor="economics">
+                      Economics
+                    </label>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {category === "A/L" && section === "Arts" && (
+              <div className="input-group mb-5">
+                <label className="input-group-text" htmlFor="subject">
+                  Subjects
+                </label>
+                <div className="form-control">
+                  <div className="form-check form-check-inline">
+                    <input
+                      className="form-check-input"
+                      type="checkbox"
+                      name="subject"
+                      id="history"
+                      value="History"
+                      checked={subject.includes("History")}
+                      onChange={handleInputChange}
+                    />
+                    <label className="form-check-label" htmlFor="history">
+                      History
+                    </label>
+                  </div>
+                  <div className="form-check form-check-inline">
+                    <input
+                      className="form-check-input"
+                      type="checkbox"
+                      name="subject"
+                      id="geography"
+                      value="Geography"
+                      checked={subject.includes("Geography")}
+                      onChange={handleInputChange}
+                    />
+                    <label className="form-check-label" htmlFor="geography">
+                      Geography
+                    </label>
+                  </div>
+                  <div className="form-check form-check-inline">
+                    <input
+                      className="form-check-input"
+                      type="checkbox"
+                      name="subject"
+                      id="politicalScience"
+                      value="Political Science"
+                      checked={subject.includes("Political Science")}
+                      onChange={handleInputChange}
+                    />
+                    <label
+                      className="form-check-label"
+                      htmlFor="politicalScience"
+                    >
+                      Political Science
+                    </label>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {category === "O/L" && (
+              <div className="input-group mb-5">
+                <label className="input-group-text" htmlFor="subject">
+                  Subjects
+                </label>
+                <div className="form-control">
+                  <div className="form-check form-check-inline">
+                    <input
+                      className="form-check-input"
+                      type="checkbox"
+                      name="subject"
+                      id="Science"
+                      value="Science"
+                      checked={subject.includes("Science")}
+                      onChange={handleInputChange}
+                    />
+                    <label className="form-check-label" htmlFor="Science">
+                      Science
+                    </label>
+                  </div>
+                  <div className="form-check form-check-inline">
+                    <input
+                      className="form-check-input"
+                      type="checkbox"
+                      name="subject"
+                      id="Commerce"
+                      value="Commerce"
+                      checked={subject.includes("Commerce")}
+                      onChange={handleInputChange}
+                    />
+                    <label className="form-check-label" htmlFor="Commerce">
+                      Commerce
+                    </label>
+                  </div>
+                  <div className="form-check form-check-inline">
+                    <input
+                      className="form-check-input"
+                      type="checkbox"
+                      name="subject"
+                      id="sinhala"
+                      value="Sinhala"
+                      checked={subject.includes("Sinhala")}
+                      onChange={handleInputChange}
+                    />
+                    <label className="form-check-label" htmlFor="sinhala">
+                      Sinhala
+                    </label>
+                  </div>
+                  <div className="form-check form-check-inline">
+                    <input
+                      className="form-check-input"
+                      type="checkbox"
+                      name="subject"
+                      id="English"
+                      value="English"
+                      checked={subject.includes("English")}
+                      onChange={handleInputChange}
+                    />
+                    <label className="form-check-label" htmlFor="English">
+                      English
+                    </label>
+                  </div>
+                  <div className="form-check form-check-inline">
+                    <input
+                      className="form-check-input"
+                      type="checkbox"
+                      name="subject"
+                      id="tamil"
+                      value="Tamil"
+                      checked={subject.includes("Tamil")}
+                      onChange={handleInputChange}
+                    />
+                    <label className="form-check-label" htmlFor="tamil">
+                      Tamil
+                    </label>
+                  </div>
+                  <div className="form-check form-check-inline">
+                    <input
+                      className="form-check-input"
+                      type="checkbox"
+                      name="subject"
+                      id="maths"
+                      value="Maths"
+                      checked={subject.includes("Maths")}
+                      onChange={handleInputChange}
+                    />
+                    <label className="form-check-label" htmlFor="maths">
+                      Maths
+                    </label>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            <div>
+              <label className="input-group-text" htmlFor="regFee">
                 Registration Fee
+                <input
+                  className="form-check-input"
+                  type="checkbox"
+                  name="regFee"
+                  id="regFee"
+                  checked={regFee}
+                  onChange={handleInputChange}
+                />
               </label>
-              <input
-                className="form-control col-sm-6"
-                type="checkbox"
-                name="regFee"
-                id="regFee"
-                required
-                value={regFee}
-                onChange={(e) => handleInputChange(e)}
-              />
             </div>
           </div>
-        </div>{" "}
+        </div>
+
         <div className="row mb-5">
           <div className="col-sm-2">
             <button type="submit" className="btn btn-outline-success btn-lg">
               Save
             </button>
           </div>
-
           <div className="col-sm-2">
             <Link
               to={"/view-students"}
-              type="submit"
               className="btn btn-outline-warning btn-lg"
             >
               Cancel
