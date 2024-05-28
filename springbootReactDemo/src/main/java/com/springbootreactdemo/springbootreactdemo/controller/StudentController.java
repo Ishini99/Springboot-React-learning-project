@@ -24,7 +24,8 @@ public class StudentController {
         return new ResponseEntity<>(studentService.getStudents(), HttpStatus.FOUND);
     }
     @PostMapping
-    public Student addStudent(@RequestBody Student student){
+    public Student addStudent(@RequestBody Student student)
+    {
         return studentService.addStudent(student);
     }
     @PutMapping("/update/{id}")

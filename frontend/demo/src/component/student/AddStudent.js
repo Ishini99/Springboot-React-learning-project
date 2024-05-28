@@ -1,7 +1,7 @@
-import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Checkbox } from "@mui/material";
+import { useState, useEffect } from "react";
 
 const AddStudent = () => {
   let navigate = useNavigate();
@@ -12,12 +12,12 @@ const AddStudent = () => {
     email: "",
     homeAddress: "",
     telephone: "",
-    gardianName: "",
-    gardianTelephone: "",
-    gardianId: "",
-    gardianAddress: "",
-    regDate: "",
-    regFee: "",
+    guardianName: "",
+    guardianTelephone: "",
+    guardianId: "",
+    guardianAddress: "",
+    regDate: new Date().toISOString().slice(0, 10), // Default to today's date
+    regFee: false,
     examYear: "",
     grade: "",
     category: "",
@@ -25,58 +25,86 @@ const AddStudent = () => {
     subject: "",
   });
 
-  const [category, setCategory] = useState("");
-  const [section, setSection] = useState("");
+  // const [category, setCategory] = useState("");
+  // const [section, setSection] = useState("");
   // const [subject, setSubject] = useState("");
 
-  const {
-    firstName,
-    lastName,
-    email,
-    homeAddress,
-    telephone,
-    gardianName,
-    gardianTelephone,
-    gardianId,
-    gardianAddress,
-    regDate,
-    regFee,
-    examYear,
-    grade,
-    subject,
-  } = student;
+  // const {
+  //   firstName,
+  //   lastName,
+  //   email,
+  //   homeAddress,
+  //   telephone,
+  //  guardianName,
+  //  guardianTelephone,
+  //  guardianId,
+  //  guardianAddress,
+  //   regDate,
+  //   regFee,
+  //   examYear,
+  //   grade,
+  //   subject: [],
+  // } = student;
+
+  useEffect(() => {
+    setStudent((prevStudent) => ({
+      ...prevStudent,
+    }));
+  }, []);
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
     if (type === "checkbox" && name === "subject") {
       const newSubjects = checked
-        ? [...subject, value]
-        : subject.filter((subject) => subject !== value);
-      setStudent({
-        ...student,
+        ? [...student.subject, value]
+        : student.subject.filter((subject) => subject !== value);
+      setStudent((prevStudent) => ({
+        ...prevStudent,
         subject: newSubjects,
-      });
+      }));
     } else {
-      setStudent({
-        ...student,
+      setStudent((prevStudent) => ({
+        ...prevStudent,
         [name]: type === "checkbox" ? checked : value,
-      });
+      }));
     }
 
     if (name === "category") {
-      setCategory(value);
-      setSection("");
-      setStudent({ ...student, section: "", subject: [] });
+      setStudent((prevStudent) => ({
+        ...prevStudent,
+        category: value,
+        section: "",
+        subject: [],
+      }));
     } else if (name === "section") {
-      setSection(value);
-      setStudent({ ...student, subject: [] });
+      setStudent((prevStudent) => ({
+        ...prevStudent,
+        section: value,
+        subject: [],
+      }));
     }
   };
 
   const saveStudent = async (e) => {
     e.preventDefault();
-    await axios.post("http://localhost:9192/students", student);
-    navigate("/view-students");
+
+    // Map form fields to database column names
+
+    try {
+      const response = await axios.post(
+        "http://localhost:9192/students",
+        student,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      console.log("Student saved:", response.data);
+      navigate("/view-students");
+    } catch (error) {
+      console.error("Error saving student:", error);
+    }
   };
 
   return (
@@ -95,7 +123,7 @@ const AddStudent = () => {
                 name="firstName"
                 id="firstName"
                 required
-                value={firstName}
+                value={student.firstName}
                 onChange={handleInputChange}
               />
             </div>
@@ -109,7 +137,7 @@ const AddStudent = () => {
                 name="lastName"
                 id="lastName"
                 required
-                value={lastName}
+                value={student.lastName}
                 onChange={handleInputChange}
               />
             </div>
@@ -123,7 +151,7 @@ const AddStudent = () => {
                 name="email"
                 id="email"
                 required
-                value={email}
+                value={student.email}
                 onChange={handleInputChange}
               />
             </div>
@@ -136,8 +164,7 @@ const AddStudent = () => {
                 type="text"
                 name="homeAddress"
                 id="homeAddress"
-                required
-                value={homeAddress}
+                value={student.homeAddress}
                 onChange={handleInputChange}
               />
             </div>
@@ -151,63 +178,59 @@ const AddStudent = () => {
                 name="telephone"
                 id="telephone"
                 required
-                value={telephone}
+                value={student.telephone}
                 onChange={handleInputChange}
               />
             </div>
             <div className="input-group mb-5">
               <label className="input-group-text" htmlFor="gardianName">
-                Gardian Name
+                Guardian Name
               </label>
               <input
                 className="form-control col-sm-6"
                 type="text"
                 name="gardianName"
                 id="gardianName"
-                required
-                value={gardianName}
+                value={student.guardianName}
                 onChange={handleInputChange}
               />
             </div>
             <div className="input-group mb-5">
-              <label className="input-group-text" htmlFor="gardianId">
-                Gardian NIC No
+              <label className="input-group-text" htmlFor="guardianId">
+                Guardian NIC No
               </label>
               <input
                 className="form-control col-sm-6"
                 type="text"
-                name="gardianId"
-                id="gardianId"
-                required
-                value={gardianId}
+                name="guardianId"
+                id="guardianId"
+                value={student.guardianId}
                 onChange={handleInputChange}
               />
             </div>
             <div className="input-group mb-5">
-              <label className="input-group-text" htmlFor="gardianTelephone">
-                Gardian Telephone
+              <label className="input-group-text" htmlFor="guardianTelephone">
+                Guardian Telephone
               </label>
               <input
                 className="form-control col-sm-6"
                 type="text"
-                name="gardianTelephone"
-                id="gardianTelephone"
-                required
-                value={gardianTelephone}
+                name="guardianTelephone"
+                id="guardianTelephone"
+                value={student.guardianTelephone}
                 onChange={handleInputChange}
               />
             </div>
             <div className="input-group mb-5">
-              <label className="input-group-text" htmlFor="gardianAddress">
-                Gardian Address
+              <label className="input-group-text" htmlFor="guardianAddress">
+                Guardian Address
               </label>
               <input
                 className="form-control col-sm-6"
                 type="text"
-                name="gardianAddress"
-                id="gardianAddress"
-                required
-                value={gardianAddress}
+                name="guardianAddress"
+                id="guardianAddress"
+                value={student.guardianAddress}
                 onChange={handleInputChange}
               />
             </div>
@@ -222,7 +245,7 @@ const AddStudent = () => {
                 name="grade"
                 id="grade"
                 required
-                value={grade}
+                value={student.grade}
                 onChange={handleInputChange}
               >
                 <option value="">Select Grade</option>
@@ -244,8 +267,7 @@ const AddStudent = () => {
                 className="form-control col-sm-6"
                 name="examYear"
                 id="examYear"
-                required
-                value={examYear}
+                value={student.examYear}
                 onChange={handleInputChange}
               >
                 {" "}
@@ -268,8 +290,7 @@ const AddStudent = () => {
                 className="form-control col-sm-6"
                 name="category"
                 id="category"
-                required
-                value={category}
+                value={student.category}
                 onChange={handleInputChange}
               >
                 <option value="">Select Exam Type</option>
@@ -277,7 +298,7 @@ const AddStudent = () => {
                 <option value="O/L">O/L</option>
               </select>
             </div>
-            {category === "A/L" && (
+            {student.category === "A/L" && (
               <div className="input-group mb-5">
                 <label className="input-group-text" htmlFor="section">
                   Section
@@ -290,7 +311,7 @@ const AddStudent = () => {
                       name="section"
                       id="science"
                       value="Science"
-                      checked={section === "Science"}
+                      checked={student.section === "Science"}
                       onChange={handleInputChange}
                     />
                     <label className="form-check-label" htmlFor="science">
@@ -304,7 +325,7 @@ const AddStudent = () => {
                       name="section"
                       id="commerce"
                       value="Commerce"
-                      checked={section === "Commerce"}
+                      checked={student.section === "Commerce"}
                       onChange={handleInputChange}
                     />
                     <label className="form-check-label" htmlFor="commerce">
@@ -318,7 +339,7 @@ const AddStudent = () => {
                       name="section"
                       id="arts"
                       value="Arts"
-                      checked={section === "Arts"}
+                      checked={student.section === "Arts"}
                       onChange={handleInputChange}
                     />
                     <label className="form-check-label" htmlFor="arts">
@@ -329,7 +350,7 @@ const AddStudent = () => {
               </div>
             )}
 
-            {category === "A/L" && section === "Science" && (
+            {student.category === "A/L" && student.section === "Science" && (
               <div className="input-group mb-5">
                 <label className="input-group-text" htmlFor="subject">
                   Subjects
@@ -339,25 +360,10 @@ const AddStudent = () => {
                     <input
                       className="form-check-input"
                       type="checkbox"
-                      name="physics"
-                      id="physics"
-                      value="physics"
-                      checked={subject.includes("physics")}
-                      onChange={handleInputChange}
-                    />
-
-                    <label className="form-check-label" htmlFor="physics">
-                      Physics
-                    </label>
-                  </div>
-                  <div className="form-check form-check-inline">
-                    <input
-                      className="form-check-input"
-                      type="checkbox"
                       name="subject"
                       id="Biology"
                       value="Biology"
-                      checked={subject.includes("Biology")}
+                      checked={student.subject.includes("Biology")}
                       onChange={handleInputChange}
                     />
                     <label className="form-check-label" htmlFor="Biology">
@@ -371,7 +377,7 @@ const AddStudent = () => {
                       name="subject"
                       id="Chemistry"
                       value="Chemistry"
-                      checked={subject.includes("Chemistry")}
+                      checked={student.subject.includes("Chemistry")}
                       onChange={handleInputChange}
                     />
                     <label className="form-check-label" htmlFor="Biology">
@@ -386,7 +392,7 @@ const AddStudent = () => {
                       name="subject"
                       id="maths"
                       value="Maths"
-                      checked={subject.includes("Maths")}
+                      checked={student.subject.includes("Maths")}
                       onChange={handleInputChange}
                     />
                     <label className="form-check-label" htmlFor="maths">
@@ -397,7 +403,7 @@ const AddStudent = () => {
               </div>
             )}
 
-            {category === "A/L" && section === "Commerce" && (
+            {student.category === "A/L" && student.section === "Commerce" && (
               <div className="input-group mb-5">
                 <label className="input-group-text" htmlFor="subject">
                   Subjects
@@ -410,7 +416,7 @@ const AddStudent = () => {
                       name="subject"
                       id="accounting"
                       value="Accounting"
-                      checked={subject.includes("Accounting")}
+                      checked={student.subject.includes("Accounting")}
                       onChange={handleInputChange}
                     />
                     <label className="form-check-label" htmlFor="accounting">
@@ -424,7 +430,7 @@ const AddStudent = () => {
                       name="subject"
                       id="business"
                       value="Business Studies"
-                      checked={subject.includes("Business Studies")}
+                      checked={student.subject.includes("Business Studies")}
                       onChange={handleInputChange}
                     />
                     <label className="form-check-label" htmlFor="business">
@@ -438,7 +444,7 @@ const AddStudent = () => {
                       name="subject"
                       id="economics"
                       value="Economics"
-                      checked={subject.includes("Economics")}
+                      checked={student.subject.includes("Economics")}
                       onChange={handleInputChange}
                     />
                     <label className="form-check-label" htmlFor="economics">
@@ -449,7 +455,7 @@ const AddStudent = () => {
               </div>
             )}
 
-            {category === "A/L" && section === "Arts" && (
+            {student.category === "A/L" && student.section === "Arts" && (
               <div className="input-group mb-5">
                 <label className="input-group-text" htmlFor="subject">
                   Subjects
@@ -462,7 +468,7 @@ const AddStudent = () => {
                       name="subject"
                       id="history"
                       value="History"
-                      checked={subject.includes("History")}
+                      checked={student.subject.includes("History")}
                       onChange={handleInputChange}
                     />
                     <label className="form-check-label" htmlFor="history">
@@ -476,7 +482,7 @@ const AddStudent = () => {
                       name="subject"
                       id="geography"
                       value="Geography"
-                      checked={subject.includes("Geography")}
+                      checked={student.subject.includes("Geography")}
                       onChange={handleInputChange}
                     />
                     <label className="form-check-label" htmlFor="geography">
@@ -490,7 +496,7 @@ const AddStudent = () => {
                       name="subject"
                       id="politicalScience"
                       value="Political Science"
-                      checked={subject.includes("Political Science")}
+                      checked={student.subject.includes("Political Science")}
                       onChange={handleInputChange}
                     />
                     <label
@@ -504,7 +510,7 @@ const AddStudent = () => {
               </div>
             )}
 
-            {category === "O/L" && (
+            {student.category === "O/L" && (
               <div className="input-group mb-5">
                 <label className="input-group-text" htmlFor="subject">
                   Subjects
@@ -517,7 +523,7 @@ const AddStudent = () => {
                       name="subject"
                       id="Science"
                       value="Science"
-                      checked={subject.includes("Science")}
+                      checked={student.subject.includes("Science")}
                       onChange={handleInputChange}
                     />
                     <label className="form-check-label" htmlFor="Science">
@@ -531,7 +537,7 @@ const AddStudent = () => {
                       name="subject"
                       id="Commerce"
                       value="Commerce"
-                      checked={subject.includes("Commerce")}
+                      checked={student.subject.includes("Commerce")}
                       onChange={handleInputChange}
                     />
                     <label className="form-check-label" htmlFor="Commerce">
@@ -545,7 +551,7 @@ const AddStudent = () => {
                       name="subject"
                       id="sinhala"
                       value="Sinhala"
-                      checked={subject.includes("Sinhala")}
+                      checked={student.subject.includes("Sinhala")}
                       onChange={handleInputChange}
                     />
                     <label className="form-check-label" htmlFor="sinhala">
@@ -559,7 +565,7 @@ const AddStudent = () => {
                       name="subject"
                       id="English"
                       value="English"
-                      checked={subject.includes("English")}
+                      checked={student.subject.includes("English")}
                       onChange={handleInputChange}
                     />
                     <label className="form-check-label" htmlFor="English">
@@ -573,7 +579,7 @@ const AddStudent = () => {
                       name="subject"
                       id="tamil"
                       value="Tamil"
-                      checked={subject.includes("Tamil")}
+                      checked={student.subject.includes("Tamil")}
                       onChange={handleInputChange}
                     />
                     <label className="form-check-label" htmlFor="tamil">
@@ -587,7 +593,7 @@ const AddStudent = () => {
                       name="subject"
                       id="maths"
                       value="Maths"
-                      checked={subject.includes("Maths")}
+                      checked={student.subject.includes("Maths")}
                       onChange={handleInputChange}
                     />
                     <label className="form-check-label" htmlFor="maths">
@@ -606,7 +612,7 @@ const AddStudent = () => {
                   type="checkbox"
                   name="regFee"
                   id="regFee"
-                  checked={regFee}
+                  checked={student.regFee}
                   onChange={handleInputChange}
                 />
               </label>
