@@ -33,7 +33,7 @@ const StudentsView = () => {
       <Search search={search} setSearch={setSearch} />
       <table className="table table-bordered table-hover shadow custom-table">
         {" "}
-        {/* Added custom-table class for custom styles */}
+      
         <thead>
           <tr className="text-center">
             <th>ID</th>

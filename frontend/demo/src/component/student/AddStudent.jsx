@@ -25,26 +25,7 @@ const AddStudent = () => {
     subject: "",
   });
 
-  // const [category, setCategory] = useState("");
-  // const [section, setSection] = useState("");
-  // const [subject, setSubject] = useState("");
-
-  // const {
-  //   firstName,
-  //   lastName,
-  //   email,
-  //   homeAddress,
-  //   telephone,
-  //  guardianName,
-  //  guardianTelephone,
-  //  guardianId,
-  //  guardianAddress,
-  //   regDate,
-  //   regFee,
-  //   examYear,
-  //   grade,
-  //   subject: [],
-  // } = student;
+  
 
   useEffect(() => {
     setStudent((prevStudent) => ({
@@ -74,13 +55,13 @@ const AddStudent = () => {
         ...prevStudent,
         category: value,
         section: "",
-        subject: [],
+        subject: "",
       }));
     } else if (name === "section") {
       setStudent((prevStudent) => ({
         ...prevStudent,
         section: value,
-        subject: [],
+        subject: "",
       }));
     }
   };
@@ -88,8 +69,7 @@ const AddStudent = () => {
   const saveStudent = async (e) => {
     e.preventDefault();
 
-    // Map form fields to database column names
-
+    
     try {
       const response = await axios.post(
         "http://localhost:9192/students",
@@ -98,6 +78,7 @@ const AddStudent = () => {
           headers: {
             "Content-Type": "application/json",
           },
+          // subjects: JSON.stringify(student.subject),
         }
       );
       console.log("Student saved:", response.data);
@@ -182,19 +163,25 @@ const AddStudent = () => {
                 onChange={handleInputChange}
               />
             </div>
+           
+
+
             <div className="input-group mb-5">
-              <label className="input-group-text" htmlFor="gardianName">
+              <label className="input-group-text" htmlFor="guardianName">
                 Guardian Name
               </label>
               <input
                 className="form-control col-sm-6"
                 type="text"
-                name="gardianName"
-                id="gardianName"
+                name="guardianName"
+                id="guardianName"
                 value={student.guardianName}
                 onChange={handleInputChange}
               />
             </div>
+
+
+
             <div className="input-group mb-5">
               <label className="input-group-text" htmlFor="guardianId">
                 Guardian NIC No
@@ -359,7 +346,7 @@ const AddStudent = () => {
                   <div className="form-check form-check-inline">
                     <input
                       className="form-check-input"
-                      type="checkbox"
+                      type="radio"
                       name="subject"
                       id="Biology"
                       value="Biology"
@@ -373,7 +360,7 @@ const AddStudent = () => {
                   <div className="form-check form-check-inline">
                     <input
                       className="form-check-input"
-                      type="checkbox"
+                      type="radio"
                       name="subject"
                       id="Chemistry"
                       value="Chemistry"
@@ -388,7 +375,7 @@ const AddStudent = () => {
                   <div className="form-check form-check-inline">
                     <input
                       className="form-check-input"
-                      type="checkbox"
+                      type="radio"
                       name="subject"
                       id="maths"
                       value="Maths"
@@ -412,7 +399,7 @@ const AddStudent = () => {
                   <div className="form-check form-check-inline">
                     <input
                       className="form-check-input"
-                      type="checkbox"
+                      type="radio"
                       name="subject"
                       id="accounting"
                       value="Accounting"
@@ -426,7 +413,7 @@ const AddStudent = () => {
                   <div className="form-check form-check-inline">
                     <input
                       className="form-check-input"
-                      type="checkbox"
+                      type="radio"
                       name="subject"
                       id="business"
                       value="Business Studies"
@@ -440,7 +427,7 @@ const AddStudent = () => {
                   <div className="form-check form-check-inline">
                     <input
                       className="form-check-input"
-                      type="checkbox"
+                      type="radio"
                       name="subject"
                       id="economics"
                       value="Economics"
@@ -464,7 +451,7 @@ const AddStudent = () => {
                   <div className="form-check form-check-inline">
                     <input
                       className="form-check-input"
-                      type="checkbox"
+                      type="radio"
                       name="subject"
                       id="history"
                       value="History"
@@ -478,7 +465,7 @@ const AddStudent = () => {
                   <div className="form-check form-check-inline">
                     <input
                       className="form-check-input"
-                      type="checkbox"
+                      type="radio"
                       name="subject"
                       id="geography"
                       value="Geography"
@@ -492,7 +479,7 @@ const AddStudent = () => {
                   <div className="form-check form-check-inline">
                     <input
                       className="form-check-input"
-                      type="checkbox"
+                      type="radio"
                       name="subject"
                       id="politicalScience"
                       value="Political Science"
@@ -519,7 +506,7 @@ const AddStudent = () => {
                   <div className="form-check form-check-inline">
                     <input
                       className="form-check-input"
-                      type="checkbox"
+                      type="radio"
                       name="subject"
                       id="Science"
                       value="Science"
@@ -533,7 +520,7 @@ const AddStudent = () => {
                   <div className="form-check form-check-inline">
                     <input
                       className="form-check-input"
-                      type="checkbox"
+                      type="radio"
                       name="subject"
                       id="Commerce"
                       value="Commerce"
@@ -547,7 +534,7 @@ const AddStudent = () => {
                   <div className="form-check form-check-inline">
                     <input
                       className="form-check-input"
-                      type="checkbox"
+                      type="radio"
                       name="subject"
                       id="sinhala"
                       value="Sinhala"
@@ -561,7 +548,7 @@ const AddStudent = () => {
                   <div className="form-check form-check-inline">
                     <input
                       className="form-check-input"
-                      type="checkbox"
+                      type="radio"
                       name="subject"
                       id="English"
                       value="English"
@@ -575,7 +562,7 @@ const AddStudent = () => {
                   <div className="form-check form-check-inline">
                     <input
                       className="form-check-input"
-                      type="checkbox"
+                      type="radio"
                       name="subject"
                       id="tamil"
                       value="Tamil"
@@ -589,7 +576,7 @@ const AddStudent = () => {
                   <div className="form-check form-check-inline">
                     <input
                       className="form-check-input"
-                      type="checkbox"
+                      type="radio"
                       name="subject"
                       id="maths"
                       value="Maths"
