@@ -22,7 +22,7 @@ const StudentsView = () => {
       setStudents(result.data);
     }
   };
-
+  
   const handleDelete = async (id) => {
     await axios.delete(`http://localhost:9192/students/delete/${id}`);
     loadStudents();
@@ -76,7 +76,8 @@ const StudentsView = () => {
                 <td>{student.guardianId}</td>
                 <td>{student.guardianAddress}</td>
                 <td>{student.regDate}</td>
-                <td>{student.regFee}</td>
+                <td>{student.regFee == 1 ? "Paid" : student.regFee == 0 || student.regFee == null ? "Not paid" : "Not paid"}</td>
+
                 <td>{student.examYear}</td>
                 <td>{student.grade}</td>
                 <td>{student.category}</td>

@@ -37,7 +37,6 @@ const EditStudent = () => {
 		firstName,
 		lastName,
 		email,
-		department,
 		homeAddress,
     telephone,
     guardianName,
@@ -64,12 +63,7 @@ const EditStudent = () => {
 		setStudent(result.data);
 	};
 
-	// const handleInputChange = (e) => {
-	// 	setStudent({
-	// 		...student,
-	// 		[e.target.name]: e.target.value,
-	// 	});
-	// };
+	
 
 
 	useEffect(() => {

@@ -1,12 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const NavBar = () => {
+const NavBarMain = () => {
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark mb-5">
       <div className="container-fluid">
         <Link className="navbar-brand" to={"/"}>
-          Student Details
+         EDU institute
         </Link>
         <button
           className="navbar-toggler"
@@ -27,12 +27,12 @@ const NavBar = () => {
                 aria-current="page"
                 to={"/view-students"}
               >
-                View All Student
+                 Student Details
               </Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link" to={"/add-students"}>
-                Add new Students
+              <Link className="nav-link" to={"/view-teachers"}>
+              Teacher Details
               </Link>
             </li>
           </ul>
@@ -42,4 +42,4 @@ const NavBar = () => {
   );
 };
 
-export default NavBar;
+export default NavBarMain;

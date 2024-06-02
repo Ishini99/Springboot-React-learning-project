@@ -3,35 +3,50 @@ import "/node_modules/bootstrap/dist/js/bootstrap.min.js";
 import "./App.css";
 import Home from "./Home";
 import StudentsView from "./component/student/StudentsView";
-import NavBar from "./component/common/NavBar";
+import TeachersView from "./component/teacher/TeachersView";
+
+import NavBarMain from "./component/common/NavBarMain";
+import NavBarStudent from "./component/common/NavBarStudent";
+import NavBarTeacher from "./component/common/NavBarTeacher";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import AddStudent from "./component/student/AddStudent";
 import EditStudent from "./component/student/EditStudent";
-import StudentPofile from "./component/student/StudentPofile";
+import StudentProfile from "./component/student/StudentProfile";
+import AddTeacher from "./component/teacher/AddTeacher";
+import EditTeacher from "./component/teacher/EditTeacher";
+import TeacherProfile from "./component/teacher/TeacherProfile";
 
 function App() {
   return (
     <main className="container mt-5">
       <Router>
-        <NavBar />
+        <NavBarMain />
         <Routes>
           <Route exact path="/" element={<Home />}></Route>
-          <Route exact path="/view-students" element={<StudentsView />}></Route>
-          <Route exact path="/add-students" element={<AddStudent />}></Route>
-          <Route
-            exact
-            path="/edit-student/:id"
-            element={<EditStudent />}
-          ></Route>
-          <Route
-            exact
-            path="/student-profile/:id"
-            element={<StudentPofile />}
-          ></Route>
+          <Route path="/student/*" element={<StudentRoutes />} />
+          <Route path="/teacher/*" element={<TeacherRoutes />} />
         </Routes>
       </Router>
     </main>
   );
 }
+
+const StudentRoutes = () => (
+  <Routes>
+    <Route path="/view-students" element={<StudentsView />} />
+    <Route path="/add-student" element={<AddStudent />} />
+    <Route path="/edit-student/:id" element={<EditStudent />} />
+    <Route path="/student-profile/:id" element={<StudentProfile />} />
+  </Routes>
+);
+
+const TeacherRoutes = () => (
+  <Routes>
+    <Route path="/" element={<TeachersView />} />
+    <Route path="add-teacher" element={<AddTeacher />} />
+    <Route path="edit-teacher/:id" element={<EditTeacher />} />
+    <Route path="/student-teacher/:id" element={<TeacherProfile />} />
+  </Routes>
+);
 
 export default App;
