@@ -6,6 +6,7 @@ import com.springbootreactdemo.springbootreactdemo.model.Student;
 import com.springbootreactdemo.springbootreactdemo.repository.StudentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import java.util.logging.Logger;
 
 import java.util.List;
 
@@ -13,6 +14,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class StudentService implements IStudentService {
     private final StudentRepository studentRepository;
+    private static final Logger logger = Logger.getLogger(StudentService.class.getName());
+
 
     @Override
     public List<Student> getStudents() {
@@ -23,9 +26,12 @@ public class StudentService implements IStudentService {
     public Student addStudent(Student student) {
 
         if (studentAlreadyExists(student.getEmail())) {
+
+            logger.info("Student with email " + student.getEmail() + " already exists.");
             throw new StudentAlreadyExistsException(student.getEmail() + " already exists!");
 
         }
+        logger.info("Student added successfully " + student.getEmail());
         return studentRepository.save(student);
     }
 
@@ -43,9 +49,17 @@ public class StudentService implements IStudentService {
             existingStudent.setGuardianAddress(student.getGuardianAddress());
             existingStudent.setExamYear(student.getExamYear());
             existingStudent.setGrade(student.getGrade());
+            existingStudent.setCategory(student.getCategory());
+            existingStudent.setSection(student.getSection());
             existingStudent.setSubject(student.getSubject());
+
+            logger.info("Student updated successfully " + student.getEmail());
+
             return studentRepository.save(existingStudent);
-        }).orElseThrow(() -> new StudentNotFoundException("Student not found with ID: " + id));
+        }).orElseThrow(() -> {
+            logger.info("Student updating error " + student.getEmail());
+            return new StudentNotFoundException("Student not found with ID: " + id);
+        });
     }
 
     @Override

@@ -49,7 +49,8 @@ public class Student { // This class represents a student entity in the applicat
 
     @Column(nullable = true)
     private String guardianAddress; // Corrected spelling of guardian
-
+    @Column(nullable = true)
+    private String section;
     @Column(nullable = false)
     private LocalDate regDate;
 

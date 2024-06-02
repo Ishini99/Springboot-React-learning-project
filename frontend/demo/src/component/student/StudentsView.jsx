@@ -40,7 +40,23 @@ const StudentsView = () => {
             <th>First Name</th>
             <th>Last Name</th>
             <th>Email</th>
-            <th>Department</th> {/* Corrected 'Depatment' to 'Department' */}
+            <th>Home Address</th>
+            <th>Telephone</th>
+            <th>guardianName</th> 
+            <th>guardianTelephone</th>
+            <th>guardianId</th>
+            <th>guardianAddress</th>
+            <th>regDate</th>
+            <th>regFee</th>
+            <th>examYear</th>
+            <th>grade</th>
+            <th>category</th>
+            <th>section</th>
+            <th>subject</th>
+
+
+
+
             <th colSpan="3">Actions</th>
           </tr>
         </thead>
@@ -53,7 +69,19 @@ const StudentsView = () => {
                 <td>{student.firstName}</td>
                 <td>{student.lastName}</td>
                 <td>{student.email}</td>
-                <td>{student.department}</td>
+                <td>{student.homeAddress}</td>
+                <td>{student.telephone}</td>
+                <td>{student.guardianName}</td>
+                <td>{student.guardianTelephone}</td>
+                <td>{student.guardianId}</td>
+                <td>{student.guardianAddress}</td>
+                <td>{student.regDate}</td>
+                <td>{student.regFee}</td>
+                <td>{student.examYear}</td>
+                <td>{student.grade}</td>
+                <td>{student.category}</td>
+                <td>{student.section}</td>
+                <td>{student.subject}</td>
                 <td className="mx-2">
                   <Link
                     to={`/student-profile/${student.id}`}
