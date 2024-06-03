@@ -1,7 +1,10 @@
 package com.springbootreactdemo.springbootreactdemo.controller;
 
+import com.springbootreactdemo.springbootreactdemo.exception.StudentAlreadyExistsException;
+import com.springbootreactdemo.springbootreactdemo.exception.StudentNotFoundException;
 import com.springbootreactdemo.springbootreactdemo.model.Student;
 import com.springbootreactdemo.springbootreactdemo.service.IStudentService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,29 +28,45 @@ public class StudentController {
     }
 
     @PostMapping
-//    public ResponseEntity<Student> addStudent(@Valid @RequestBody Student student) {
-    public ResponseEntity<Student> addStudent(@RequestBody Student student) {
+    public ResponseEntity<String> addStudent(@Valid @RequestBody Student student) {
 
-        Student createdStudent = studentService.addStudent(student);
-        return new ResponseEntity<>(createdStudent, HttpStatus.CREATED);
+        try {
+            Student createdStudent = studentService.addStudent(student);
+            return ResponseEntity.status(HttpStatus.CREATED).body("Student added successfully");
+        } catch (StudentAlreadyExistsException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Student already exists");
+        }
     }
 
+
+
     @PutMapping("/update/{id}")
-//    public ResponseEntity<Student> updateStudent(@Valid @RequestBody Student student, @PathVariable Long id) {
-    public ResponseEntity<Student> updateStudent( @RequestBody Student student, @PathVariable Long id) {
-        Student updatedStudent = studentService.updateStudent(student, id);
-        return new ResponseEntity<>(updatedStudent, HttpStatus.OK);
+    public ResponseEntity<Student> updateStudent(@Valid @RequestBody Student student, @PathVariable Long id) {
+        try {
+            Student updatedStudent = studentService.updateStudent(student, id);
+            return new ResponseEntity<>(updatedStudent, HttpStatus.OK);
+        } catch (StudentNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteStudent(@PathVariable Long id) {
-        studentService.deleteStudent(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        try {
+            studentService.deleteStudent(id);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (StudentNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @GetMapping("/student/{id}")
     public ResponseEntity<Student> getStudentById(@PathVariable Long id) {
-        Student student = studentService.getStudentById(id);
-        return new ResponseEntity<>(student, HttpStatus.OK);
+        try {
+            Student student = studentService.getStudentById(id);
+            return new ResponseEntity<>(student, HttpStatus.OK);
+        } catch (StudentNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 }
