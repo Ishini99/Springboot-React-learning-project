@@ -13,27 +13,35 @@ const StudentsView = () => {
   }, []);
 
   const loadStudents = async () => {
-    const result = await axios.get("http://localhost:9192/students", {
-      validateStatus: () => {
-        return true;
-      },
-    });
-    if (result.status === 302) {
-      setStudents(result.data);
+    try {
+      const result = await axios.get("http://localhost:9192/students", {
+        validateStatus: () => {
+          return true;
+        },
+      });
+      if (result.status === 200) { 
+        setStudents(result.data);
+      } else {
+        console.error("Error fetching students:", result.status, result.statusText);
+      }
+    } catch (error) {
+      console.error("Error fetching students:", error);
     }
   };
-  
+
   const handleDelete = async (id) => {
-    await axios.delete(`http://localhost:9192/students/delete/${id}`);
-    loadStudents();
+    try {
+      await axios.delete(`http://localhost:9192/students/delete/${id}`);
+      loadStudents();
+    } catch (error) {
+      console.error("Error deleting student:", error);
+    }
   };
 
   return (
-    <section>
+    <section className="scrollable-section">
       <Search search={search} setSearch={setSearch} />
       <table className="table table-bordered table-hover shadow custom-table">
-        {" "}
-      
         <thead>
           <tr className="text-center">
             <th>ID</th>
@@ -42,27 +50,23 @@ const StudentsView = () => {
             <th>Email</th>
             <th>Home Address</th>
             <th>Telephone</th>
-            <th>guardianName</th> 
-            <th>guardianTelephone</th>
-            <th>guardianId</th>
-            <th>guardianAddress</th>
-            <th>regDate</th>
-            <th>regFee</th>
-            <th>examYear</th>
-            <th>grade</th>
-            <th>category</th>
-            <th>section</th>
-            <th>subject</th>
-
-
-
-
+            <th>Guardian Name</th>
+            <th>Guardian Telephone</th>
+            <th>Guardian ID</th>
+            <th>Guardian Address</th>
+            <th>Registration Date</th>
+            <th>Registration Fee</th>
+            <th>Exam Year</th>
+            <th>Grade</th>
+            <th>Category</th>
+            <th>Section</th>
+            <th>Subject</th>
             <th colSpan="3">Actions</th>
           </tr>
         </thead>
         <tbody className="text-center">
           {students
-            .filter((st) => st.firstName.toLowerCase().includes(search))
+            .filter((st) => st.firstName.toLowerCase().includes(search.toLowerCase()))
             .map((student, index) => (
               <tr key={student.id}>
                 <th scope="row">{index + 1}</th>
@@ -76,26 +80,19 @@ const StudentsView = () => {
                 <td>{student.guardianId}</td>
                 <td>{student.guardianAddress}</td>
                 <td>{student.regDate}</td>
-                <td>{student.regFee == 1 ? "Paid" : student.regFee == 0 || student.regFee == null ? "Not paid" : "Not paid"}</td>
-
+                <td>{student.regFee === 1 ? "Paid" : "Not paid"}</td>
                 <td>{student.examYear}</td>
                 <td>{student.grade}</td>
                 <td>{student.category}</td>
                 <td>{student.section}</td>
                 <td>{student.subject}</td>
                 <td className="mx-2">
-                  <Link
-                    to={`/student-profile/${student.id}`}
-                    className="btn btn-info"
-                  >
+                  <Link to={`/student/student-profile/${student.id}`} className="btn btn-info">
                     <FaEye />
                   </Link>
                 </td>
                 <td className="mx-2">
-                  <Link
-                    to={`/edit-student/${student.id}`}
-                    className="btn btn-warning"
-                  >
+                  <Link to={`/student/edit-student/${student.id}`} className="btn btn-warning">
                     <FaEdit />
                   </Link>
                 </td>

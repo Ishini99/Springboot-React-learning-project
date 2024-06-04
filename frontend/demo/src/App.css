@@ -27,6 +27,15 @@
 .App-link {
   color: #61dafb;
 }
+.scrollable-section {
+  max-height: 500px; /* Adjust as needed */
+  overflow-y: auto;
+  padding: 10px;
+}
+
+.table-container {
+  overflow-x: auto;
+}
 
 @keyframes App-logo-spin {
   from {

@@ -63,8 +63,6 @@ const EditStudent = () => {
 		setStudent(result.data);
 	};
 
-	
-
 
 	useEffect(() => {
 		setStudent((prevStudent) => ({
@@ -104,17 +102,6 @@ const EditStudent = () => {
 		  }));
 		}
 	  };
-	
-
-
-
-
-
-
-
-
-
-
 
 	const updateStudent = async (e) => {
 		e.preventDefault();
@@ -124,14 +111,17 @@ const EditStudent = () => {
 			student
 		);
 		console.log("Student saved:");
-		navigate("/view-students");
+		navigate("/student/view-students");
 	}catch(error){
 		console.error("Error saving student:", error);
 	}
 	};
 
 	return (
-		<div className="col-sm-8 py-2 px-5 offset-2 shadow">
+		
+
+<div className="col-sm-10 py-2 px-4 offset-0 width 100% shadow">
+
 			<h2 className="mt-5"> Edit Student</h2>
 			<form onSubmit={(e) => updateStudent(e)}>
 				
@@ -671,7 +661,7 @@ const EditStudent = () => {
 						<button
 							type="submit"
 							className="btn btn-outline-success btn-lg">
-							Save
+							Update
 						</button>
 					</div>
 

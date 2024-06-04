@@ -82,14 +82,14 @@ const AddStudent = () => {
         }
       );
       console.log("Student saved:", response.data);
-      navigate("/view-students");
+      navigate("/student/view-students");
     } catch (error) {
       console.error("Error saving student:", error);
     }
   };
 
   return (
-    <div className="col-sm-10 py-2 px-4 offset-2 shadow">
+    <div className="col-sm-10 py-2 px-4 offset-0 width 100% shadow">
       <h2 className="mt-3 mb-3">Student Details</h2>
       <form onSubmit={saveStudent}>
         <div className="row">
