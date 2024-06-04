@@ -1,20 +1,18 @@
-import "./App.css";
+// import "./App.css";
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import "/node_modules/bootstrap/dist/js/bootstrap.min.js";
-import "./App.css";
-import Home from "./Home";
-import StudentsView from "./component/student/StudentsView";
-import TeachersView from "./component/teacher/TeachersView";
-
-import NavBarMain from "./component/common/NavBarMain";
-import NavBarStudent from "./component/common/NavBarStudent";
-import NavBarTeacher from "./component/common/NavBarTeacher";
 import {
   BrowserRouter as Router,
   Routes,
   Route,
   useLocation,
 } from "react-router-dom";
+import Home from "./Home";
+import StudentsView from "./component/student/StudentsView";
+import TeachersView from "./component/teacher/TeachersView";
+import NavBarMain from "./component/common/NavBarMain";
+import NavBarStudent from "./component/common/NavBarStudent";
+import NavBarTeacher from "./component/common/NavBarTeacher";
 import AddStudent from "./component/student/AddStudent";
 import EditStudent from "./component/student/EditStudent";
 import StudentProfile from "./component/student/StudentProfile";
@@ -59,7 +57,7 @@ const StudentRoutes = () => (
 
 const TeacherRoutes = () => (
   <Routes>
-    <Route path="/" element={<TeachersView />} />
+    <Route path="view-teachers" element={<TeachersView />} />
     <Route path="add-teacher" element={<AddTeacher />} />
     <Route path="edit-teacher/:id" element={<EditTeacher />} />
     <Route path="teacher-profile/:id" element={<TeacherProfile />} />

@@ -6,7 +6,7 @@ const NavBarTeacher = () => {
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark mb-5">
       <div className="container-fluid">
         <Link className="navbar-brand" to={"/"}>
-        EDU institute
+          EDU institute
         </Link>
         <button
           className="navbar-toggler"
@@ -25,13 +25,13 @@ const NavBarTeacher = () => {
               <Link
                 className="nav-link active"
                 aria-current="page"
-                to={"/view-teachers"}
+                to={"/teacher/view-teachers"}
               >
                 View All Teachers
               </Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link" to={"/add-teachers"}>
+              <Link className="nav-link" to={"/teacher/add-teacher"}>
                 Add new Teacher
               </Link>
             </li>
