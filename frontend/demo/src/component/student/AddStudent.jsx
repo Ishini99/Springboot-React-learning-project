@@ -2,6 +2,8 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Checkbox } from "@mui/material";
 import { useState, useEffect } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const AddStudent = () => {
   let navigate = useNavigate();
@@ -24,8 +26,6 @@ const AddStudent = () => {
     section: "",
     subject: "",
   });
-
-  
 
   useEffect(() => {
     setStudent((prevStudent) => ({
@@ -69,7 +69,6 @@ const AddStudent = () => {
   const saveStudent = async (e) => {
     e.preventDefault();
 
-    
     try {
       const response = await axios.post(
         "http://localhost:9192/students",
@@ -81,15 +80,28 @@ const AddStudent = () => {
           // subjects: JSON.stringify(student.subject),
         }
       );
+      toast.success("Student Details Saved Successfully");
       console.log("Student saved:", response.data);
-      navigate("/student/view-students");
+      // navigate("/student/view-students");
     } catch (error) {
+      toast.error("Failed to Save Student Details");
       console.error("Error saving student:", error);
     }
   };
 
   return (
     <div className="col-sm-10 py-2 px-4 offset-0 width 100% shadow">
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
       <h2 className="mt-3 mb-3">Student Details</h2>
       <form onSubmit={saveStudent}>
         <div className="row">
@@ -163,8 +175,6 @@ const AddStudent = () => {
                 onChange={handleInputChange}
               />
             </div>
-           
-
 
             <div className="input-group mb-5">
               <label className="input-group-text" htmlFor="guardianName">
@@ -179,8 +189,6 @@ const AddStudent = () => {
                 onChange={handleInputChange}
               />
             </div>
-
-
 
             <div className="input-group mb-5">
               <label className="input-group-text" htmlFor="guardianId">

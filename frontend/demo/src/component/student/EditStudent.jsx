@@ -1,22 +1,17 @@
-import React, {
-	useEffect,
-	useState,
-} from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-import {
-	Link,
-	useNavigate,
-	useParams,
-} from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const EditStudent = () => {
-	let navigate = useNavigate();
+  let navigate = useNavigate();
 
-	const { id } = useParams();
+  const { id } = useParams();
 
-	const [student, setStudent] = useState({
-	firstName: "",
+  const [student, setStudent] = useState({
+    firstName: "",
     lastName: "",
     email: "",
     homeAddress: "",
@@ -25,107 +20,112 @@ const EditStudent = () => {
     guardianTelephone: "",
     guardianId: "",
     guardianAddress: "",
-    regDate:"",
-	regFee: "",
+    regDate: "",
+    regFee: "",
     examYear: "",
     grade: "",
     category: "",
     section: "",
     subject: "",
-	});
-	const {
-		firstName,
-		lastName,
-		email,
-		homeAddress,
+  });
+  const {
+    firstName,
+    lastName,
+    email,
+    homeAddress,
     telephone,
     guardianName,
     guardianTelephone,
     guardianId,
     guardianAddress,
     regDate,
-	regFee,
+    regFee,
     examYear,
     grade,
     category,
     section,
     subject,
-	} = student;
+  } = student;
 
-	useEffect(() => {
-		loadStudent();
-	}, []);
+  useEffect(() => {
+    loadStudent();
+  }, []);
 
-	const loadStudent = async () => {
-		const result = await axios.get(
-			`http://localhost:9192/students/student/${id}`
-		);
-		setStudent(result.data);
-	};
+  const loadStudent = async () => {
+    const result = await axios.get(
+      `http://localhost:9192/students/student/${id}`
+    );
+    setStudent(result.data);
+  };
 
+  useEffect(() => {
+    setStudent((prevStudent) => ({
+      ...prevStudent,
+    }));
+  }, []);
 
-	useEffect(() => {
-		setStudent((prevStudent) => ({
-		  ...prevStudent,
-		}));
-	  }, []);
-	
-	  const handleInputChange = (e) => {
-		const { name, value, type, checked } = e.target;
-		if (type === "checkbox" && name === "subject") {
-		  const newSubjects = checked
-			? [...student.subject, value]
-			: student.subject.filter((subject) => subject !== value);
-		  setStudent((prevStudent) => ({
-			...prevStudent,
-			subject: newSubjects,
-		  }));
-		} else {
-		  setStudent((prevStudent) => ({
-			...prevStudent,
-			[name]: type === "checkbox" ? checked : value,
-		  }));
-		}
-	
-		if (name === "category") {
-		  setStudent((prevStudent) => ({
-			...prevStudent,
-			category: value,
-			section: "",
-			subject: "",
-		  }));
-		} else if (name === "section") {
-		  setStudent((prevStudent) => ({
-			...prevStudent,
-			section: value,
-			subject: "",
-		  }));
-		}
-	  };
+  const handleInputChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    if (type === "checkbox" && name === "subject") {
+      const newSubjects = checked
+        ? [...student.subject, value]
+        : student.subject.filter((subject) => subject !== value);
+      setStudent((prevStudent) => ({
+        ...prevStudent,
+        subject: newSubjects,
+      }));
+    } else {
+      setStudent((prevStudent) => ({
+        ...prevStudent,
+        [name]: type === "checkbox" ? checked : value,
+      }));
+    }
 
-	const updateStudent = async (e) => {
-		e.preventDefault();
-		try{
-		await axios.put(
-			`http://localhost:9192/students/update/${id}`,
-			student
-		);
-		console.log("Student saved:");
-		navigate("/student/view-students");
-	}catch(error){
-		console.error("Error saving student:", error);
-	}
-	};
+    if (name === "category") {
+      setStudent((prevStudent) => ({
+        ...prevStudent,
+        category: value,
+        section: "",
+        subject: "",
+      }));
+    } else if (name === "section") {
+      setStudent((prevStudent) => ({
+        ...prevStudent,
+        section: value,
+        subject: "",
+      }));
+    }
+  };
 
-	return (
-		
+  const updateStudent = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.put(`http://localhost:9192/students/update/${id}`, student);
+      console.log("Student Updated:");
+      toast.success("Student Details Updated Successfully");
+      navigate("/student/view-students");
+    } catch (error) {
+      console.error("Error saving student:", error);
+      toast.error("Failed to Update Student Details");
+    }
+  };
 
-<div className="col-sm-10 py-2 px-4 offset-0 width 100% shadow">
-
-			<h2 className="mt-5"> Edit Student</h2>
-			<form onSubmit={(e) => updateStudent(e)}>
-				
-				   <div className="row">
+  return (
+    <div className="col-sm-10 py-2 px-4 offset-0 width 100% shadow">
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
+      <h2 className="mt-5"> Edit Student</h2>
+      <form onSubmit={(e) => updateStudent(e)}>
+        <div className="row">
           <div className="col-md-6">
             <div className="input-group mb-5">
               <label className="input-group-text" htmlFor="firstName">
@@ -196,8 +196,6 @@ const EditStudent = () => {
                 onChange={handleInputChange}
               />
             </div>
-           
-
 
             <div className="input-group mb-5">
               <label className="input-group-text" htmlFor="guardianName">
@@ -212,8 +210,6 @@ const EditStudent = () => {
                 onChange={handleInputChange}
               />
             </div>
-
-
 
             <div className="input-group mb-5">
               <label className="input-group-text" htmlFor="guardianId">
@@ -656,27 +652,26 @@ const EditStudent = () => {
           </div>
         </div> */}
 
-				<div className="row mb-5">
-					<div className="col-sm-2">
-						<button
-							type="submit"
-							className="btn btn-outline-success btn-lg">
-							Update
-						</button>
-					</div>
+        <div className="row mb-5">
+          <div className="col-sm-2">
+            <button type="submit" className="btn btn-outline-success btn-lg">
+              Update
+            </button>
+          </div>
 
-					<div className="col-sm-2">
-						<Link
-							to={"/view-students"}
-							type="submit"
-							className="btn btn-outline-warning btn-lg">
-							Cancel
-						</Link>
-					</div>
-				</div>
-			</form>
-		</div>
-	);
+          <div className="col-sm-2">
+            <Link
+              to={"/view-students"}
+              type="submit"
+              className="btn btn-outline-warning btn-lg"
+            >
+              Cancel
+            </Link>
+          </div>
+        </div>
+      </form>
+    </div>
+  );
 };
 
 export default EditStudent;

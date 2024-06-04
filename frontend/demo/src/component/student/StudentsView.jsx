@@ -19,10 +19,14 @@ const StudentsView = () => {
           return true;
         },
       });
-      if (result.status === 200) { 
+      if (result.status === 200) {
         setStudents(result.data);
       } else {
-        console.error("Error fetching students:", result.status, result.statusText);
+        console.error(
+          "Error fetching students:",
+          result.status,
+          result.statusText
+        );
       }
     } catch (error) {
       console.error("Error fetching students:", error);
@@ -66,7 +70,9 @@ const StudentsView = () => {
         </thead>
         <tbody className="text-center">
           {students
-            .filter((st) => st.firstName.toLowerCase().includes(search.toLowerCase()))
+            .filter((st) =>
+              st.firstName.toLowerCase().includes(search.toLowerCase())
+            )
             .map((student, index) => (
               <tr key={student.id}>
                 <th scope="row">{index + 1}</th>
@@ -87,12 +93,18 @@ const StudentsView = () => {
                 <td>{student.section}</td>
                 <td>{student.subject}</td>
                 <td className="mx-2">
-                  <Link to={`/student/student-profile/${student.id}`} className="btn btn-info">
+                  <Link
+                    to={`/student/student-profile/${student.id}`}
+                    className="btn btn-info"
+                  >
                     <FaEye />
                   </Link>
                 </td>
                 <td className="mx-2">
-                  <Link to={`/student/edit-student/${student.id}`} className="btn btn-warning">
+                  <Link
+                    to={`/student/edit-student/${student.id}`}
+                    className="btn btn-warning"
+                  >
                     <FaEdit />
                   </Link>
                 </td>
