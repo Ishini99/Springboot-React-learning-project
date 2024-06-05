@@ -82,7 +82,7 @@ const AddStudent = () => {
       );
       toast.success("Student Details Saved Successfully");
       console.log("Student saved:", response.data);
-      // navigate("/student/view-students");
+      navigate("/student/view-students");
     } catch (error) {
       toast.error("Failed to Save Student Details");
       console.error("Error saving student:", error);
