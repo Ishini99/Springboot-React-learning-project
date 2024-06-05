@@ -7,5 +7,13 @@ import java.util.List;
 
 public interface ITeacherService {
     List<Teacher> getTeachers();
+
+    Teacher getTeacherById(Long Id);
+
     Teacher addTeacher(TeacherDTO teacherDTO);
+    void deleteTeacher (Long id);
+
+//    Teacher updateTeacher(Teacher teacher, Long id);
+
+    Teacher updateTeacher(TeacherDTO teacherDTO, Long id);
 }

@@ -1,9 +1,13 @@
 package com.springbootreactdemo.springbootreactdemo.controller;
 
 import com.springbootreactdemo.springbootreactdemo.DTO.TeacherDTO;
+import com.springbootreactdemo.springbootreactdemo.exception.StudentNotFoundException;
 import com.springbootreactdemo.springbootreactdemo.exception.TeacherAlreadyExistsException;
+import com.springbootreactdemo.springbootreactdemo.exception.TeacherNotFoundException;
+import com.springbootreactdemo.springbootreactdemo.model.Student;
 import com.springbootreactdemo.springbootreactdemo.model.Teacher;
 import com.springbootreactdemo.springbootreactdemo.service.ITeacherService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,4 +38,32 @@ public class TeacherController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Teacher already exists");
         }
     }
+    @GetMapping("/teacher/{id}")
+    public ResponseEntity<Teacher> getTeacherById(@PathVariable Long id) {
+        try {
+            Teacher teacher = teacherService.getTeacherById(id);
+            return new ResponseEntity<>(teacher, HttpStatus.OK);
+        } catch (StudentNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Void> deleteTeacher(@PathVariable Long id) {
+        try {
+            teacherService.deleteTeacher(id);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (TeacherNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+    @PutMapping("/update/{id}")
+    public ResponseEntity<Teacher> updateTeacher(@Valid @RequestBody TeacherDTO teacherDTO, @PathVariable Long id) {
+        try {
+            Teacher updateTeacher = teacherService.updateTeacher(teacherDTO, id);
+            return new ResponseEntity<>(updateTeacher, HttpStatus.OK);
+        } catch (StudentNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
 }
