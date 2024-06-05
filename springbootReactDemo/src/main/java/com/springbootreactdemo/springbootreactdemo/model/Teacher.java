@@ -26,13 +26,16 @@ public class Teacher {
     @Column(nullable = false)
     private String mobileNo;
     @Column(nullable = false)
-    private String nic;
-    @Column(nullable = true)
-    private String subjectCode;
-    @Column(nullable = true)
-    private String educationQualifications;
+    private String nicNo;
 
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "class_id", referencedColumnName = "id")
+    private Class classDetails;
+
+    public void setClassDetails(Class classDetails) {
+        this.classDetails = classDetails;
+    }
 
 
 

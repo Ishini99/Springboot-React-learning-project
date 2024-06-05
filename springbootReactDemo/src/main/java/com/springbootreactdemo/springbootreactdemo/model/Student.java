@@ -76,6 +76,9 @@ public class Student { // This class represents a student entity in the applicat
 
     @Column(nullable = true)
     private String  subject;
+    public void setSubject(String subject) {
+        this.subject = subject != null ? subject.toUpperCase() : null;
+    }
 
 
 
