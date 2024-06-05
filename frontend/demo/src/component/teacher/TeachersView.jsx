@@ -29,7 +29,7 @@ const TeachersView = () => {
         );
       }
     } catch (error) {
-      console.error("Error fetching students:", error);
+      console.error("Error fetching teacher data:", error);
     }
   };
 
@@ -38,7 +38,7 @@ const TeachersView = () => {
       await axios.delete(`http://localhost:9192/teachers/delete/${id}`);
       loadTeachers();
     } catch (error) {
-      console.log("Error fetching teacher", error);
+      console.log("Error deleting teacher", error);
     }
   };
 
@@ -78,11 +78,11 @@ const TeachersView = () => {
                 <td>{teacher.address}</td>
                 <td>{teacher.mobileNo}</td>
                 <td>{teacher.nicNo}</td>
-                <td>{teacher.subject}</td>
-                <td>{teacher.grade}</td>
-                <td>{teacher.category}</td>
-                <td>{teacher.section}</td>
-                <td>{teacher.subjectCode}</td>
+                <td>{teacher.classDetails?.subject}</td>
+                <td>{teacher.classDetails?.grade}</td>
+                <td>{teacher.classDetails?.category}</td>
+                <td>{teacher.classDetails?.section}</td>
+                <td>{teacher.classDetails?.subjectCode}</td>
                 <td className="mx-2">
                   <Link
                     to={`/teacher-profile/${teacher.id}`}
