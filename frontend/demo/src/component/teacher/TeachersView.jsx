@@ -2,32 +2,50 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { FaEdit, FaEye, FaTrashAlt } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import Search from "../common/Search";
 
 const TeachersView = () => {
   const [teachers, setTeachers] = useState([]);
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     loadTeachers();
   }, []);
 
   const loadTeachers = async () => {
-    const result = await axios.get("http://localhost:9192/teachers", {
-      validateStatus: () => {
-        return true;
-      },
-    });
-    if (result.status === 302) {
-      setTeachers(result.data);
+    try {
+      const result = await axios.get("http://localhost:9192/teachers", {
+        validateStatus: () => {
+          return true;
+        },
+      });
+      if (result.status === 200) {
+        setTeachers(result.data);
+      } else {
+        console.error(
+          "Error fetching teacher data",
+          result.status,
+          result.statusText
+        );
+      }
+    } catch (error) {
+      console.error("Error fetching students:", error);
     }
   };
 
   const handleDelete = async (id) => {
-    await axios.delete(`http://localhost:9192/teachers/delete/${id}`);
-    loadTeachers();
+    try {
+      await axios.delete(`http://localhost:9192/teachers/delete/${id}`);
+      loadTeachers();
+    } catch (error) {
+      console.log("Error fetching teacher", error);
+    }
   };
 
   return (
-    <section>
+    <section className="scrollable-section">
+      <Search search={search} setSearch={setSearch} />
+
       <table className="table table-bordered table-hover shadow custom-table">
         <thead>
           <tr className="text-center">
@@ -36,45 +54,61 @@ const TeachersView = () => {
             <th>Last Name</th>
             <th>Email</th>
             <th>Home Address</th>
-            <th>Telephone</th>
+            <th>Mobile Number</th>
+            <th>NIC No</th>
+            <th>Subject</th>
+            <th>Grade</th>
+            <th>Category</th>
+            <th>Section</th>
+            <th>Subject Code</th>
             <th colSpan="3">Actions</th>
           </tr>
         </thead>
         <tbody className="text-center">
-          {teachers.map((teacher, index) => (
-            <tr key={teacher.id}>
-              <th scope="row">{index + 1}</th>
-              <td>{teacher.firstName}</td>
-              <td>{teacher.lastName}</td>
-              <td>{teacher.email}</td>
-              <td>{teacher.homeAddress}</td>
-              <td>{teacher.telephone}</td>
-              <td className="mx-2">
-                <Link
-                  to={`/teacher-profile/${teacher.id}`}
-                  className="btn btn-info"
-                >
-                  <FaEye />
-                </Link>
-              </td>
-              <td className="mx-2">
-                <Link
-                  to={`/edit-teacher/${teacher.id}`}
-                  className="btn btn-warning"
-                >
-                  <FaEdit />
-                </Link>
-              </td>
-              <td className="mx-2">
-                <button
-                  className="btn btn-danger"
-                  onClick={() => handleDelete(teacher.id)}
-                >
-                  <FaTrashAlt />
-                </button>
-              </td>
-            </tr>
-          ))}
+          {teachers
+            .filter((t) =>
+              t.firstName.toLowerCase().includes(search.toLowerCase())
+            )
+            .map((teacher, index) => (
+              <tr key={teacher.id}>
+                <th scope="row">{index + 1}</th>
+                <td>{teacher.firstName}</td>
+                <td>{teacher.lastName}</td>
+                <td>{teacher.email}</td>
+                <td>{teacher.address}</td>
+                <td>{teacher.mobileNo}</td>
+                <td>{teacher.nicNo}</td>
+                <td>{teacher.subject}</td>
+                <td>{teacher.grade}</td>
+                <td>{teacher.category}</td>
+                <td>{teacher.section}</td>
+                <td>{teacher.subjectCode}</td>
+                <td className="mx-2">
+                  <Link
+                    to={`/teacher-profile/${teacher.id}`}
+                    className="btn btn-info"
+                  >
+                    <FaEye />
+                  </Link>
+                </td>
+                <td className="mx-2">
+                  <Link
+                    to={`/edit-teacher/${teacher.id}`}
+                    className="btn btn-warning"
+                  >
+                    <FaEdit />
+                  </Link>
+                </td>
+                <td className="mx-2">
+                  <button
+                    className="btn btn-danger"
+                    onClick={() => handleDelete(teacher.id)}
+                  >
+                    <FaTrashAlt />
+                  </button>
+                </td>
+              </tr>
+            ))}
         </tbody>
       </table>
     </section>
