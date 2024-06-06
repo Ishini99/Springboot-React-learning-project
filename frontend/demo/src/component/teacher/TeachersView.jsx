@@ -85,7 +85,7 @@ const TeachersView = () => {
                 <td>{teacher.classDetails?.subjectCode}</td>
                 <td className="mx-2">
                   <Link
-                    to={`/teacher-profile/${teacher.id}`}
+                    to={`/teacher/teacher-profile/${teacher.id}`}
                     className="btn btn-info"
                   >
                     <FaEye />
@@ -93,7 +93,7 @@ const TeachersView = () => {
                 </td>
                 <td className="mx-2">
                   <Link
-                    to={`/edit-teacher/${teacher.id}`}
+                    to={`/teacher/edit-teacher/${teacher.id}`}
                     className="btn btn-warning"
                   >
                     <FaEdit />

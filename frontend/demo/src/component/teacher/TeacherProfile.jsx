@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import React from "react";
 import { useParams } from "react-router-dom";
+import axios from "axios";
 
 const TeacherProfile = () => {
   const { id } = useParams();
@@ -23,7 +24,7 @@ const TeacherProfile = () => {
     const result = await axios.get(
       `http://localhost:9192/teachers/teacher/${id}`
     );
-    setStudent(result.data);
+    setTeacher(result.data);
   };
 
   return <div></div>;
