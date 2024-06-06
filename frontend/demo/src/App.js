@@ -7,9 +7,13 @@ import {
   Route,
   useLocation,
 } from "react-router-dom";
+import About from "./About";
+
 import Home from "./Home";
 import StudentsView from "./component/student/StudentsView";
 import TeachersView from "./component/teacher/TeachersView";
+import Login from "./component/login/Login";
+import ResetPassword from "./component/login/ResetPassword";
 import NavBarMain from "./component/common/NavBarMain";
 import NavBarStudent from "./component/common/NavBarStudent";
 import NavBarTeacher from "./component/common/NavBarTeacher";
@@ -38,7 +42,10 @@ const MainRouter = () => {
       {location.pathname.startsWith("/student") && <NavBarStudent />}
       {location.pathname.startsWith("/teacher") && <NavBarTeacher />}
       <Routes>
-        <Route exact path="/" element={<Home />} />
+        <Route exact path="/" element={<About />} />
+        <Route exact path="/home" element={<Home />} />
+        <Route exact path="/login" element={<Login />} />
+        <Route exact path="/reset-password" element={<ResetPassword />} />
         <Route path="/student/*" element={<StudentRoutes />} />
         <Route path="/teacher/*" element={<TeacherRoutes />} />
       </Routes>

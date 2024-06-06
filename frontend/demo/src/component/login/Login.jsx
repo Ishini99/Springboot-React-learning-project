@@ -1,48 +1,78 @@
-import React from "react";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [emailError, setEmailError] = useState("");
-  const [passwordError, setPasswordError] = useState("");
+  const navigate = useNavigate();
 
-  const onButtonClick = () => {
-    // You'll update this function later...
+  const onLoginClick = () => {
+    // Handle login logic here
   };
+
+  const formStyle = {
+    maxWidth: "400px",
+    margin: "0 auto",
+    padding: "20px",
+    border: "1px solid #ccc",
+    borderRadius: "5px",
+    backgroundColor: "#f9f9f9",
+  };
+
+  const labelStyle = {
+    marginBottom: "5px",
+    display: "block",
+  };
+
+  const inputStyle = {
+    width: "100%",
+    padding: "10px",
+    marginBottom: "10px",
+    borderRadius: "5px",
+    border: "1px solid #ccc",
+  };
+
+  const buttonStyle = {
+    width: "100%",
+    padding: "10px",
+    borderRadius: "5px",
+    border: "none",
+    backgroundColor: "#007bff",
+    color: "#fff",
+    cursor: "pointer",
+  };
+
   return (
-    <div className={"mainContainer"}>
-      <div className={"titleContainer"}>
-        <div>Login</div>
-      </div>
-      <br />
-      <div className={"inputContainer"}>
+    <div style={formStyle}>
+      <form onSubmit={onLoginClick}>
+        <h2 style={{ textAlign: "center", marginBottom: "20px" }}>Login</h2>
+        <label htmlFor="email" style={labelStyle}>
+          Email
+        </label>
         <input
+          type="email"
+          id="email"
+          name="email"
           value={email}
-          placeholder="Enter your email here"
-          onChange={(ev) => setEmail(ev.target.value)}
-          className={"inputBox"}
+          onChange={(e) => setEmail(e.target.value)}
+          style={inputStyle}
         />
-        <label className="errorLabel">{emailError}</label>
-      </div>
-      <br />
-      <div className={"inputContainer"}>
+        <label htmlFor="password" style={labelStyle}>
+          Password
+        </label>
         <input
+          type="password"
+          id="password"
+          name="password"
           value={password}
-          placeholder="Enter your password here"
-          onChange={(ev) => setPassword(ev.target.value)}
-          className={"inputBox"}
+          onChange={(e) => setPassword(e.target.value)}
+          style={inputStyle}
         />
-        <label className="errorLabel">{passwordError}</label>
-      </div>
-      <br />
-      <div className={"inputContainer"}>
-        <input
-          className={"inputButton"}
-          type="button"
-          onClick={onButtonClick}
-          value={"Log in"}
-        />
-      </div>
+        <Link to="/reset-password">Forgot password?</Link>
+        <button type="submit" style={buttonStyle}>
+          Login
+        </button>
+      </form>
     </div>
   );
 };
