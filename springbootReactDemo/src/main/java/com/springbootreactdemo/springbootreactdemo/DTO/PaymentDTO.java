@@ -12,5 +12,6 @@ public class PaymentDTO {
     private String description;
     private String billNo;
     private Long studentId;
+    private Long teacherId;
 
 }
