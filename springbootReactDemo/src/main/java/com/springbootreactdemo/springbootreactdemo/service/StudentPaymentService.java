@@ -1,6 +1,7 @@
 package com.springbootreactdemo.springbootreactdemo.service;
 
 import com.springbootreactdemo.springbootreactdemo.DTO.PaymentDTO;
+import com.springbootreactdemo.springbootreactdemo.exception.StudentNotFoundException;
 import com.springbootreactdemo.springbootreactdemo.model.Student;
 import com.springbootreactdemo.springbootreactdemo.model.StudentPayment;
 import com.springbootreactdemo.springbootreactdemo.repository.StudentPaymentRepository;
@@ -48,6 +49,12 @@ public class StudentPaymentService implements IStudentPaymentService {
 
     @Override
     public void deleteStudentPayment(Long id) {
+        if (!studentPaymentRepository.existsById(id)) {
+            throw new StudentNotFoundException("Student not found with ID: " + id);
+        }
+        logger.info("Deleting student with ID: " + id);
+        studentRepository.deleteById(id);
+
     }
 
     @Override
