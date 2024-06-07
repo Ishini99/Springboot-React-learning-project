@@ -15,7 +15,7 @@ import java.util.List;
 
 //import static com.springbootreactdemo.springbootreactdemo.service.StudentService.logger;
 
-@CrossOrigin("https://localhost:3000")
+@CrossOrigin("http://localhost:3000")
 @RestController
 @RequestMapping("payment")
 @RequiredArgsConstructor

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useNavigate, useParams } from "react-router-dom";
@@ -15,6 +15,12 @@ const AddTeacherPayment = () => {
     status: "",
     date: new Date().toISOString().slice(0, 10),
   });
+  useEffect(() => {
+    setPayment((prevPayment) => ({
+      ...prevPayment,
+      teacherId: id,
+    }));
+  }, [id]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -30,18 +36,14 @@ const AddTeacherPayment = () => {
       const response = await axios.post(
         `http://localhost:9192/payment/teacher/${id}`,
         payment,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
+        {}
       );
-      toast.success("Teacher payment Details Saved Successfully");
+      toast.success("Teacher payment details saved successfully");
       console.log("Teacher payment saved:", response.data);
-      navigate("/teacher/view-teachers");
+      navigate("/payment/all-teacher");
     } catch (error) {
-      toast.error("Failed to Save Teacher payment Details");
-      console.error("Error saving teacher payment:", error);
+      toast.error("Failed to save Teacher payment details");
+      console.error("Error saving Teacher payment:", error);
     }
   };
 
@@ -124,8 +126,7 @@ const AddTeacherPayment = () => {
           >
             Month
           </label>
-          <input
-            type="text"
+          <select
             name="month"
             id="month"
             value={payment.month}
@@ -137,7 +138,21 @@ const AddTeacherPayment = () => {
               border: "1px solid #ccc",
               borderRadius: "4px",
             }}
-          />
+          >
+            <option value="">Select Month</option>
+            <option value="January">January</option>
+            <option value="February">February</option>
+            <option value="March">March</option>
+            <option value="April">April</option>
+            <option value="May">May</option>
+            <option value="June">June</option>
+            <option value="July">July</option>
+            <option value="August">August</option>
+            <option value="September">September</option>
+            <option value="October">October</option>
+            <option value="November">November</option>
+            <option value="December">December</option>
+          </select>
         </div>
         <div style={{ marginBottom: "15px" }}>
           <label
@@ -200,7 +215,7 @@ const AddTeacherPayment = () => {
             textAlign: "center",
             textDecoration: "none",
             color: "#fff",
-            backgroundColor: "#007bff",
+            backgroundColor: "black",
             border: "none",
             borderRadius: "4px",
             cursor: "pointer",

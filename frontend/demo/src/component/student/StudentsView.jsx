@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { FaEdit, FaEye, FaTrashAlt } from "react-icons/fa";
-import { FaMoneyBillWave } from "react-icons/fa";
+import { FaEdit, FaEye, FaTrashAlt, FaMoneyBillWave } from "react-icons/fa";
+// import { FaMoneyBillWave } from "react-icons/fa";
 import { Link, Navigate } from "react-router-dom";
 import Search from "../common/Search";
 
@@ -48,91 +48,134 @@ const StudentsView = () => {
   };
 
   return (
-    <section className="scrollable-section">
+    <section style={{ overflowX: "auto" }}>
       <Search search={search} setSearch={setSearch} />
-      <table className="table table-bordered table-hover shadow custom-table">
-        <thead>
-          <tr className="text-center">
-            <th>ID</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Email</th>
-            <th>Home Address</th>
-            <th>Telephone</th>
-            <th>Guardian Name</th>
-            <th>Guardian Telephone</th>
-            <th>Guardian ID</th>
-            <th>Guardian Address</th>
-            <th>Registration Date</th>
-            <th>Registration Fee</th>
-            <th>Exam Year</th>
-            <th>Grade</th>
-            <th>Category</th>
-            <th>Section</th>
-            <th>Subject</th>
-            <th colSpan="4">Actions</th>
-          </tr>
-        </thead>
-        <tbody className="text-center">
-          {students
-            .filter((st) =>
-              st.firstName.toLowerCase().includes(search.toLowerCase())
-            )
-            .map((student, index) => (
-              <tr key={student.id}>
-                <th scope="row">{index + 1}</th>
-                <td>{student.firstName}</td>
-                <td>{student.lastName}</td>
-                <td>{student.email}</td>
-                <td>{student.homeAddress}</td>
-                <td>{student.telephone}</td>
-                <td>{student.guardianName}</td>
-                <td>{student.guardianTelephone}</td>
-                <td>{student.guardianId}</td>
-                <td>{student.guardianAddress}</td>
-                <td>{student.regDate}</td>
-                <td>{student.regFee === 1 ? "Paid" : "Not paid"}</td>
-                <td>{student.examYear}</td>
-                <td>{student.grade}</td>
-                <td>{student.category}</td>
-                <td>{student.section}</td>
-                <td>{student.subject}</td>
-                <td className="mx-2">
-                  <Link
-                    to={`/student/student-profile/${student.id}`}
-                    className="btn btn-info"
-                  >
-                    <FaEye />
-                  </Link>
-                </td>
-                <td className="mx-2">
-                  <Link
-                    to={`/student/edit-student/${student.id}`}
-                    className="btn btn-warning"
-                  >
-                    <FaEdit />
-                  </Link>
-                </td>
-                <td className="mx-2">
-                  <button
-                    className="btn btn-danger"
-                    onClick={() => handleDelete(student.id)}
-                  >
-                    <FaTrashAlt />
-                  </button>
-                </td>
-                <td className="mx-2">
-                  <Link
-                    to={`/payment/student/${student.id}`}
-                    className="btn btn-success"
-                  >
-                    <FaMoneyBillWave />
-                  </Link>
-                </td>
-              </tr>
-            ))}
-        </tbody>
-      </table>
+      <div style={{ width: "100%" }}>
+        <table
+          style={{
+            borderCollapse: "collapse",
+            width: "100%",
+            border: "1px solid #ddd",
+            marginTop: "20px",
+          }}
+        >
+          <thead>
+            <tr style={{ textAlign: "center" }}>
+              <th>ID</th>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>Email</th>
+              <th>Home Address</th>
+              <th>Telephone</th>
+              <th>Guardian Name</th>
+              <th>Guardian Telephone</th>
+              <th>Guardian ID</th>
+              <th>Guardian Address</th>
+              <th>Registration Date</th>
+              <th>Registration Fee</th>
+              <th>Exam Year</th>
+              <th>Grade</th>
+              <th>Category</th>
+              <th>Section</th>
+              <th>Subject</th>
+              <th colSpan="4">Actions</th>
+            </tr>
+          </thead>
+          <tbody style={{ textAlign: "center" }}>
+            {students
+              .filter((st) =>
+                st.firstName.toLowerCase().includes(search.toLowerCase())
+              )
+              .map((student, index) => (
+                <tr key={student.id}>
+                  <th style={{ border: "1px solid #ddd", padding: "8px" }}>
+                    {index + 1}
+                  </th>
+                  <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                    {student.firstName}
+                  </td>
+                  <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                    {student.lastName}
+                  </td>
+                  <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                    {student.email}
+                  </td>
+                  <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                    {student.homeAddress}
+                  </td>
+                  <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                    {student.telephone}
+                  </td>
+                  <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                    {student.guardianName}
+                  </td>
+                  <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                    {student.guardianTelephone}
+                  </td>
+                  <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                    {student.guardianId}
+                  </td>
+                  <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                    {student.guardianAddress}
+                  </td>
+                  <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                    {student.regDate}
+                  </td>
+                  <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                    {student.regFee === 1 ? "Paid" : "Not paid"}
+                  </td>
+                  <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                    {student.examYear}
+                  </td>
+                  <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                    {student.grade}
+                  </td>
+                  <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                    {student.category}
+                  </td>
+                  <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                    {student.section}
+                  </td>
+                  <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                    {student.subject}
+                  </td>
+                  <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                    <Link
+                      to={`/student/student-profile/${student.id}`}
+                      className="btn btn-info"
+                    >
+                      <FaEye />
+                    </Link>
+                  </td>
+                  <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                    <Link
+                      to={`/student/edit-student/${student.id}`}
+                      className="btn btn-warning"
+                    >
+                      <FaEdit />
+                    </Link>
+                  </td>
+                  <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                    <button
+                      className="btn btn-danger"
+                      onClick={() => handleDelete(student.id)}
+                    >
+                      <FaTrashAlt />
+                    </button>
+                  </td>
+                  <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                    <Link
+                      to={`/payment/student/${student.id}`}
+                      className="btn btn-success"
+                    >
+                      <FaMoneyBillWave />
+                    </Link>
+                  </td>
+                </tr>
+              ))}
+          </tbody>
+        </table>
+      </div>
     </section>
   );
 };

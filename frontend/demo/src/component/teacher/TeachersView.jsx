@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { FaEdit, FaEye, FaTrashAlt } from "react-icons/fa";
+import { FaEdit, FaEye, FaTrashAlt, FaMoneyBillWave } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import Search from "../common/Search";
 
@@ -43,74 +43,115 @@ const TeachersView = () => {
   };
 
   return (
-    <section className="scrollable-section">
+    <section style={{ overflowX: "auto" }}>
       <Search search={search} setSearch={setSearch} />
 
-      <table className="table table-bordered table-hover shadow custom-table">
-        <thead>
-          <tr className="text-center">
-            <th>ID</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Email</th>
-            <th>Home Address</th>
-            <th>Mobile Number</th>
-            <th>NIC No</th>
-            <th>Subject</th>
-            <th>Grade</th>
-            <th>Category</th>
-            <th>Section</th>
-            <th>Subject Code</th>
-            <th colSpan="3">Actions</th>
-          </tr>
-        </thead>
-        <tbody className="text-center">
-          {teachers
-            .filter((t) =>
-              t.firstName.toLowerCase().includes(search.toLowerCase())
-            )
-            .map((teacher, index) => (
-              <tr key={teacher.id}>
-                <th scope="row">{index + 1}</th>
-                <td>{teacher.firstName}</td>
-                <td>{teacher.lastName}</td>
-                <td>{teacher.email}</td>
-                <td>{teacher.address}</td>
-                <td>{teacher.mobileNo}</td>
-                <td>{teacher.nicNo}</td>
-                <td>{teacher.classDetails?.subject}</td>
-                <td>{teacher.classDetails?.grade}</td>
-                <td>{teacher.classDetails?.category}</td>
-                <td>{teacher.classDetails?.section}</td>
-                <td>{teacher.classDetails?.subjectCode}</td>
-                <td className="mx-2">
-                  <Link
-                    to={`/teacher/teacher-profile/${teacher.id}`}
-                    className="btn btn-info"
-                  >
-                    <FaEye />
-                  </Link>
-                </td>
-                <td className="mx-2">
-                  <Link
-                    to={`/teacher/edit-teacher/${teacher.id}`}
-                    className="btn btn-warning"
-                  >
-                    <FaEdit />
-                  </Link>
-                </td>
-                <td className="mx-2">
-                  <button
-                    className="btn btn-danger"
-                    onClick={() => handleDelete(teacher.id)}
-                  >
-                    <FaTrashAlt />
-                  </button>
-                </td>
-              </tr>
-            ))}
-        </tbody>
-      </table>
+      <div style={{ width: "100%" }}>
+        <table
+          style={{
+            borderCollapse: "collapse",
+            width: "100%",
+            border: "1px solid #ddd",
+            marginTop: "20px",
+          }}
+        >
+          <thead>
+            <tr style={{ textAlign: "center" }}>
+              <th>ID</th>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>Email</th>
+              <th>Home Address</th>
+              <th>Mobile Number</th>
+              <th>NIC No</th>
+              <th>Subject</th>
+              <th>Grade</th>
+              <th>Category</th>
+              <th>Section</th>
+              <th>Subject Code</th>
+              <th colSpan="4">Actions</th>
+            </tr>
+          </thead>
+          <tbody style={{ textAlign: "center" }}>
+            {teachers
+              .filter((t) =>
+                t.firstName.toLowerCase().includes(search.toLowerCase())
+              )
+              .map((teacher, index) => (
+                <tr key={teacher.id}>
+                  <th style={{ border: "1px solid #ddd", padding: "8px" }}>
+                    {index + 1}
+                  </th>
+                  <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                    {teacher.firstName}
+                  </td>
+                  <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                    {teacher.lastName}
+                  </td>
+                  <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                    {teacher.email}
+                  </td>
+                  <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                    {teacher.address}
+                  </td>
+                  <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                    {teacher.mobileNo}
+                  </td>
+                  <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                    {teacher.nicNo}
+                  </td>
+                  <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                    {teacher.classDetails?.subject}
+                  </td>
+                  <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                    {teacher.classDetails?.grade}
+                  </td>
+                  <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                    {teacher.classDetails?.category}
+                  </td>
+                  <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                    {teacher.classDetails?.section}
+                  </td>
+                  <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                    {teacher.classDetails?.subjectCode}
+                  </td>
+                  <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                    <Link
+                      to={`/teacher/teacher-profile/${teacher.id}`}
+                      className="btn btn-info"
+                    >
+                      <FaEye />
+                    </Link>
+                  </td>
+                  <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                    <Link
+                      to={`/teacher/edit-teacher/${teacher.id}`}
+                      className="btn btn-warning"
+                    >
+                      <FaEdit />
+                    </Link>
+                  </td>
+                  <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                    <button
+                      className="btn btn-danger"
+                      onClick={() => handleDelete(teacher.id)}
+                    >
+                      <FaTrashAlt />
+                    </button>
+                  </td>
+                  <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                    <Link
+                      to={`/payment/teacher/${teacher.id}`}
+                      className="btn btn-success"
+                    >
+                      <FaMoneyBillWave />
+                    </Link>
+                  </td>
+                </tr>
+              ))}
+          </tbody>
+        </table>
+      </div>
     </section>
   );
 };

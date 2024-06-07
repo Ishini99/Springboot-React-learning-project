@@ -6,25 +6,40 @@ const SummaryStudentPayment = () => {
   const [payments, setPayments] = useState([]);
 
   useEffect(() => {
-    const fetchPayments = async () => {
-      try {
-        const response = await axios.get(
-          "http://localhost:9192/payment/student"
-        );
-        setPayments(response.data);
-      } catch (error) {
-        toast.error("Failed to fetch student payment details");
-        console.error("Error fetching student payments:", error);
-      }
-    };
-
-    fetchPayments();
+    loadStudents();
   }, []);
+
+  const loadStudents = async () => {
+    try {
+      const result = await axios.get("http://localhost:9192/payment/student", {
+        validateStatus: () => {
+          return true;
+        },
+      });
+      if (result.status === 200) {
+        const filteredPayments = result.data.filter(
+          (payment) => payment.studentDetails != null
+        );
+        setPayments(filteredPayments);
+      } else {
+        console.error(
+          "Error fetching students:",
+          result.status,
+          result.statusText
+        );
+      }
+    } catch (error) {
+      toast.error("Failed to fetch student payment details");
+      console.error("Error fetching student payments:", error);
+    }
+  };
+
+  const formatValue = (value) => (value != null ? value : "-");
 
   return (
     <div
       style={{
-        maxWidth: "800px",
+        // maxWidth: "800px",
         margin: "0 auto",
         padding: "20px",
         border: "1px solid #ddd",
@@ -42,7 +57,11 @@ const SummaryStudentPayment = () => {
       >
         <thead>
           <tr>
-            <th style={thStyle}>Student ID</th>
+            <th style={thStyle}>ID</th>
+            <th style={thStyle}>Student Name</th>
+            <th style={thStyle}>Mobile No</th>
+            <th style={thStyle}>Subject</th>
+            <th style={thStyle}>Grade</th>
             <th style={thStyle}>Bill No</th>
             <th style={thStyle}>Amount</th>
             <th style={thStyle}>Month</th>
@@ -54,13 +73,31 @@ const SummaryStudentPayment = () => {
         <tbody>
           {payments.map((payment) => (
             <tr key={payment.id}>
-              <td style={tdStyle}>{payment.studentId}</td>
-              <td style={tdStyle}>{payment.billNo}</td>
-              <td style={tdStyle}>{payment.amount}</td>
-              <td style={tdStyle}>{payment.month}</td>
-              <td style={tdStyle}>{payment.description}</td>
-              <td style={tdStyle}>{payment.status}</td>
-              <td style={tdStyle}>{payment.date}</td>
+              <td style={tdStyle}>{formatValue(payment.id)}</td>
+              <td style={tdStyle}>
+                {formatValue(
+                  payment.studentDetails
+                    ? payment.studentDetails.firstName +
+                        " " +
+                        payment.studentDetails.lastName
+                    : "-"
+                )}
+              </td>
+              <td style={tdStyle}>
+                {formatValue(payment.studentDetails?.telephone)}
+              </td>
+              <td style={tdStyle}>
+                {formatValue(payment.studentDetails?.subject)}
+              </td>
+              <td style={tdStyle}>
+                {formatValue(payment.studentDetails?.grade)}
+              </td>
+              <td style={tdStyle}>{formatValue(payment.billNo)}</td>
+              <td style={tdStyle}>{formatValue(payment.amount)}</td>
+              <td style={tdStyle}>{formatValue(payment.month)}</td>
+              <td style={tdStyle}>{formatValue(payment.description)}</td>
+              <td style={tdStyle}>{formatValue(payment.status)}</td>
+              <td style={tdStyle}>{formatValue(payment.date)}</td>
             </tr>
           ))}
         </tbody>

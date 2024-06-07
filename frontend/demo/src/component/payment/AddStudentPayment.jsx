@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useNavigate, useParams } from "react-router-dom";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const AddStudentPayment = () => {
   const navigate = useNavigate();
@@ -42,7 +44,7 @@ const AddStudentPayment = () => {
       );
       toast.success("Student payment details saved successfully");
       console.log("Student payment saved:", response.data);
-      navigate("/student/view-students");
+      navigate("/payment/all-student");
     } catch (error) {
       toast.error("Failed to save student payment details");
       console.error("Error saving student payment:", error);
@@ -128,8 +130,7 @@ const AddStudentPayment = () => {
           >
             Month
           </label>
-          <input
-            type="text"
+          <select
             name="month"
             id="month"
             value={payment.month}
@@ -141,7 +142,21 @@ const AddStudentPayment = () => {
               border: "1px solid #ccc",
               borderRadius: "4px",
             }}
-          />
+          >
+            <option value="">Select Month</option>
+            <option value="January">January</option>
+            <option value="February">February</option>
+            <option value="March">March</option>
+            <option value="April">April</option>
+            <option value="May">May</option>
+            <option value="June">June</option>
+            <option value="July">July</option>
+            <option value="August">August</option>
+            <option value="September">September</option>
+            <option value="October">October</option>
+            <option value="November">November</option>
+            <option value="December">December</option>
+          </select>
         </div>
         <div style={{ marginBottom: "15px" }}>
           <label
@@ -180,11 +195,10 @@ const AddStudentPayment = () => {
           >
             Status
           </label>
-          <input
-            type="text"
-            name="status"
-            id="status"
-            value={payment.status}
+          <select
+            name="month"
+            id="month"
+            value={payment.month}
             onChange={handleChange}
             style={{
               width: "100%",
@@ -193,7 +207,11 @@ const AddStudentPayment = () => {
               border: "1px solid #ccc",
               borderRadius: "4px",
             }}
-          />
+          >
+            <option value="">Select</option>
+            <option value="January">Completed</option>
+            <option value="February">Not Completed</option>
+          </select>
         </div>
         <button
           type="submit"
@@ -204,7 +222,7 @@ const AddStudentPayment = () => {
             textAlign: "center",
             textDecoration: "none",
             color: "#fff",
-            backgroundColor: "#007bff",
+            backgroundColor: "black",
             border: "none",
             borderRadius: "4px",
             cursor: "pointer",

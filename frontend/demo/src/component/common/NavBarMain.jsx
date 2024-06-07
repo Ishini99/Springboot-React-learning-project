@@ -27,7 +27,7 @@ const NavBarMain = () => {
               </Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link" to={"/teacher"}>
+              <Link className="nav-link" to={"/teacher/view-teachers"}>
                 Teacher Details
               </Link>
             </li>

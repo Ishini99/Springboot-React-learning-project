@@ -83,7 +83,7 @@ const TeacherRoutes = () => (
 const PaymentRoutes = () => (
   <Routes>
     <Route path="/all-student" element={<SummaryStudentPayment />} />
-    <Route path="/all-teacher/" element={<SummaryTeacherPayment />} />
+    <Route path="/all-teacher" element={<SummaryTeacherPayment />} />
   </Routes>
 );
 
