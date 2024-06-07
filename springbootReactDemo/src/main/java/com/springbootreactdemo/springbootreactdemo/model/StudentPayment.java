@@ -32,6 +32,14 @@ public class StudentPayment {
     public void setStudentDetails(Student student) {
         this.studentDetails = student;
     }
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "teacher_id",referencedColumnName = "id",nullable = false)
+    private Teacher teacherDetails;
+
+    public void setTeacherDetails(Teacher teacher) {
+        this.teacherDetails = teacher;
+    }
+
 
 
 

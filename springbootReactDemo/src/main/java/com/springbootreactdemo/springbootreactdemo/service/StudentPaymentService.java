@@ -20,7 +20,7 @@ public class StudentPaymentService implements IStudentPaymentService {
 
     @Override
     public List<StudentPayment> getStudentPayment() {
-        return null;
+        return studentPaymentRepository.findAll();
     }
 
     @Override
