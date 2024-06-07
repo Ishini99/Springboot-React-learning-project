@@ -24,6 +24,10 @@ public class StudentPaymentController {
     private static final Logger logger = LoggerFactory.getLogger(StudentPaymentController.class);
 
     private final IStudentPaymentService studentPaymentService;
+    @GetMapping("student")
+    public ResponseEntity<List<StudentPayment>> getStudentPayment(){
+        return new ResponseEntity<>(studentPaymentService.getStudentPayment(),HttpStatus.OK);
+    }
     @PostMapping("/student/{id}")
     public ResponseEntity<String>addStudentPayment(@PathVariable Long id, @RequestBody PaymentDTO paymentDTO){
             studentPaymentService.addStudentPayment(id,paymentDTO);
@@ -35,10 +39,7 @@ public class StudentPaymentController {
         logger.info("Deleted payment with ID: {}", id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-    @GetMapping
-    public ResponseEntity<List<StudentPayment>> getStudentPayment(){
-return new ResponseEntity<>(studentPaymentService.getStudentPayment(),HttpStatus.OK);
-    }
+
 
 
 

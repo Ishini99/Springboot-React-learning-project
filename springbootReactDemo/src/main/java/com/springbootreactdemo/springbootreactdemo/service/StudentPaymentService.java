@@ -35,6 +35,7 @@ public class StudentPaymentService implements IStudentPaymentService {
         studentPayment.setMonth(paymentDTO.getMonth());
         studentPayment.setAmount(paymentDTO.getAmount());
         studentPayment.setDate(paymentDTO.getDate());
+        studentPayment.setStatus(paymentDTO.getStatus());
         studentPayment.setDescription(paymentDTO.getDescription());
         studentPayment.setBillNo(paymentDTO.getBillNo());
 

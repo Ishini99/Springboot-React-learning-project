@@ -20,7 +20,7 @@ public class TeacherPaymentService implements ITeacherPaymentService {
 
     @Override
     public List<TeacherPayment> getTeacherPayment() {
-        return null;
+        return teacherPaymentRepository.findAll();
     }
 
     @Override
@@ -35,6 +35,7 @@ public class TeacherPaymentService implements ITeacherPaymentService {
         teacherPayment.setAmount(paymentDTO.getAmount());
         teacherPayment.setDate(paymentDTO.getDate());
         teacherPayment.setDescription(paymentDTO.getDescription());
+        teacherPayment.setStatus(paymentDTO.getStatus());
         teacherPayment.setBillNo(paymentDTO.getBillNo());
 
         // Fetch and set Teacher

@@ -7,7 +7,7 @@ import {
   Route,
   useLocation,
 } from "react-router-dom";
-import About from "./About";
+import Dashboard from "./Dashboard";
 
 import Home from "./Home";
 import StudentsView from "./component/student/StudentsView";
@@ -23,6 +23,11 @@ import StudentProfile from "./component/student/StudentProfile";
 import AddTeacher from "./component/teacher/AddTeacher";
 import EditTeacher from "./component/teacher/EditTeacher";
 import TeacherProfile from "./component/teacher/TeacherProfile";
+import AddStudentPayment from "./component/payment/AddStudentPayment";
+import AddTeacherPayment from "./component/payment/AddTeacherPayment";
+import SummaryStudentPayment from "./component/payment/SummaryStudentPayment";
+import SummaryTeacherPayment from "./component/payment/SummaryTeacherPayment";
+import NavBarPayment from "./component/common/NavBarPayment";
 
 function App() {
   return (
@@ -41,13 +46,18 @@ const MainRouter = () => {
       {location.pathname === "/" && <NavBarMain />}
       {location.pathname.startsWith("/student") && <NavBarStudent />}
       {location.pathname.startsWith("/teacher") && <NavBarTeacher />}
+      {location.pathname.startsWith("/payment") && <NavBarPayment />}
       <Routes>
-        <Route exact path="/" element={<About />} />
+        <Route exact path="/" element={<Dashboard />} />
         <Route exact path="/home" element={<Home />} />
         <Route exact path="/login" element={<Login />} />
         <Route exact path="/reset-password" element={<ResetPassword />} />
+        <Route path="/payment/student/:id" element={<AddStudentPayment />} />
+
+        <Route path="/payment/teacher/:id" element={<AddTeacherPayment />} />
         <Route path="/student/*" element={<StudentRoutes />} />
         <Route path="/teacher/*" element={<TeacherRoutes />} />
+        <Route path="/payment/*" element={<PaymentRoutes />} />
       </Routes>
     </>
   );
@@ -68,6 +78,12 @@ const TeacherRoutes = () => (
     <Route path="add-teacher" element={<AddTeacher />} />
     <Route path="edit-teacher/:id" element={<EditTeacher />} />
     <Route path="teacher-profile/:id" element={<TeacherProfile />} />
+  </Routes>
+);
+const PaymentRoutes = () => (
+  <Routes>
+    <Route path="/all-student" element={<SummaryStudentPayment />} />
+    <Route path="/all-teacher/" element={<SummaryTeacherPayment />} />
   </Routes>
 );
 

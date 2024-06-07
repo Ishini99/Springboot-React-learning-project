@@ -17,6 +17,8 @@ public class TeacherPayment {
     private String month;
     @Column(nullable = false)
     private String amount;
+    @Column(nullable = false)
+    private String status;
 
     @Column(nullable = false)
     private String date;

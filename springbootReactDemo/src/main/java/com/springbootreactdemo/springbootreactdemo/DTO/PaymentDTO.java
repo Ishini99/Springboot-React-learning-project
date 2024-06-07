@@ -9,6 +9,7 @@ public class PaymentDTO {
     private String month;
     private String amount;
     private String date;
+    private String  status;
     private String description;
     private String billNo;
     private Long studentId;

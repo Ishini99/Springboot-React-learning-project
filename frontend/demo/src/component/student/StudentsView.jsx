@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { FaEdit, FaEye, FaTrashAlt } from "react-icons/fa";
 import { FaMoneyBillWave } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import Search from "../common/Search";
 
 const StudentsView = () => {
@@ -33,28 +33,10 @@ const StudentsView = () => {
       console.error("Error fetching students:", error);
     }
   };
-  const handlePayment = async (studentId) => {
-    const paymentData = {
-      amount: 100,
-      description: "Payment for services",
-      // Other relevant payment information
-    };
-
-    try {
-      const response = await axios.post(
-        `http://localhost:9192/payment/student/${studentId}`,
-        paymentData
-      );
-      if (response.status === 201) {
-        alert("Payment added successfully");
-      } else {
-        alert("Failed to add payment");
-      }
-    } catch (error) {
-      console.error("There was an error processing the payment!", error);
-      alert("There was an error processing the payment");
-    }
-  };
+  // const handlePayment = async (studentId) => {
+  //   const navigate = navigate();
+  //   // navigate(`/payment/student/${studentId}`);
+  // };
 
   const handleDelete = async (id) => {
     try {
@@ -140,12 +122,12 @@ const StudentsView = () => {
                   </button>
                 </td>
                 <td className="mx-2">
-                  <button
+                  <Link
+                    to={`/payment/student/${student.id}`}
                     className="btn btn-success"
-                    onClick={() => handlePayment(student.id)}
                   >
                     <FaMoneyBillWave />
-                  </button>
+                  </Link>
                 </td>
               </tr>
             ))}
